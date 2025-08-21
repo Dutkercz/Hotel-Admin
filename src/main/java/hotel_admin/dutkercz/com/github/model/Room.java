@@ -1,13 +1,16 @@
 package hotel_admin.dutkercz.com.github.model;
 
+import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import jakarta.persistence.*;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "tb_room")
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String number;
     private String singleBed;

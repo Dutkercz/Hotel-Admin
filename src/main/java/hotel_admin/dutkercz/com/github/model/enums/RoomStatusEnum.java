@@ -1,4 +1,4 @@
-package hotel_admin.dutkercz.com.github.model;
+package hotel_admin.dutkercz.com.github.model.enums;
 
 public enum RoomStatusEnum {
     AVAILABLE,

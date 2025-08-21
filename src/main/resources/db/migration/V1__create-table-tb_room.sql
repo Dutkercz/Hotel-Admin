@@ -1,6 +1,6 @@
 CREATE TABLE tb_room(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    number VARCHAR(12) NOT NULL,
+    number VARCHAR(12) NOT NULL UNIQUE,
     single_bed VARCHAR(3) NOT NULL,
     double_bed VARCHAR(3) NOT NULL,
     status VARCHAR(12) NOT NULL
