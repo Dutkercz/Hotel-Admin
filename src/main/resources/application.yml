@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: Hotel-Admin
+  datasource:
+    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}?useTimezone=true&serverTimezone=UTC
+    username: ${MY_SQL_USERNAME}
+    password: ${MY_SQL_PASSWORD}
