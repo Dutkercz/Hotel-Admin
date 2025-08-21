@@ -1,5 +1,7 @@
 package hotel_admin.dutkercz.com.github.model;
 
+import hotel_admin.dutkercz.com.github.model.enums.ClientGenderEnum;
+import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -13,21 +15,31 @@ public class Client {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private String fistName;
     private String lastName;
     private String cpf;
+
+    @Enumerated(EnumType.STRING)
+    private ClientGenderEnum gender;
+
+    @Enumerated(EnumType.STRING)
+    private ClientStatusEnum status;
+
     @Embedded
     private Address address;
 
     public Client() {
     }
 
-    public Client(Long id, String fistName, String lastName, String cpf, Address address) {
+    public Client(Long id, String fistName, String lastName, String cpf, ClientGenderEnum gender, Address address, ClientStatusEnum status) {
         this.id = id;
         this.fistName = fistName;
         this.lastName = lastName;
         this.cpf = cpf;
+        this.gender = gender;
         this.address = address;
+        this.status = status;
     }
 
     public Long getId() {
@@ -58,8 +70,12 @@ public class Client {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public ClientGenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(ClientGenderEnum gender) {
+        this.gender = gender;
     }
 
     public Address getAddress() {
@@ -70,20 +86,36 @@ public class Client {
         this.address = address;
     }
 
+    public ClientStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(ClientStatusEnum status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
         Client client = (Client) o;
-        return Objects.equals(getId(), client.getId()) && Objects.equals(getFistName(), client.getFistName()) && Objects.equals(getLastName(), client.getLastName()) && Objects.equals(getCpf(), client.getCpf()) && Objects.equals(getAddress(), client.getAddress());
+        return getId().equals(client.getId())
+                && Objects.equals(getFistName(), client.getFistName())
+                && Objects.equals(getLastName(), client.getLastName())
+                && Objects.equals(getCpf(), client.getCpf())
+                && getGender() == client.getGender()
+                && getStatus() == client.getStatus()
+                && Objects.equals(getAddress(), client.getAddress());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(getId());
+        int result = getId().hashCode();
         result = 31 * result + Objects.hashCode(getFistName());
         result = 31 * result + Objects.hashCode(getLastName());
         result = 31 * result + Objects.hashCode(getCpf());
+        result = 31 * result + Objects.hashCode(getGender());
+        result = 31 * result + Objects.hashCode(getStatus());
         result = 31 * result + Objects.hashCode(getAddress());
         return result;
     }

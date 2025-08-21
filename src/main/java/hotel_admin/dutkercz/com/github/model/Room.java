@@ -12,9 +12,12 @@ public class Room {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
     private String number;
     private String singleBed;
     private String doubleBed;
+
+    @Enumerated(EnumType.STRING)
     private RoomStatusEnum status;
 
     public Room() {
@@ -73,9 +76,11 @@ public class Room {
         if (o == null || getClass() != o.getClass()) return false;
 
         Room room = (Room) o;
-        return getId().equals(room.getId()) && getNumber().equals(room.getNumber())
+        return getId().equals(room.getId())
+                && getNumber().equals(room.getNumber())
                 && getSingleBed().equals(room.getSingleBed())
-                && getDoubleBed().equals(room.getDoubleBed()) && getStatus() == room.getStatus();
+                && getDoubleBed().equals(room.getDoubleBed())
+                && getStatus() == room.getStatus();
     }
 
     @Override
