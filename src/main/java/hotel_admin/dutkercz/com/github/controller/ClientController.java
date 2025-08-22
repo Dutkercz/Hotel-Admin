@@ -4,10 +4,7 @@ import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/clients")
@@ -35,5 +32,11 @@ public class ClientController {
     public String listClients(Model model){
         model.addAttribute("clients", clientService.findAllClients());
         return "client-list";
+    }
+
+    @GetMapping("/detail")
+    public String findByCpf(@RequestParam("cpf") String cpf, Model model){
+        model.addAttribute("clientFound", clientService.findByCpf(cpf));
+        return "client-detail";
     }
 }

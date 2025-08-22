@@ -27,4 +27,9 @@ public class ClientService {
     public List<Client> findAllClients() {
         return clientRepository.findAll().stream().filter(x -> x.getStatus().equals(ACTIVE)).toList();
     }
+
+    public Client findByCpf(String cpf) {
+        var replaced = cpf.replaceAll("[.,-]", "");
+        return clientRepository.findByCpfAndStatus(replaced, ACTIVE);
+    }
 }

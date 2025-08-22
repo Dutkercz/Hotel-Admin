@@ -1,27 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <title>Lista de Clientes</title>
     <meta charset="UTF-8"/>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>Clientes Cadastrados</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Telefone</th>
-        <th>Genero</th>
-    </tr>
-    <tr th:each="c : ${clients}">
-        <td th:text="${c.id}"></td>
-        <td th:text="${c.firstName + ' ' + c.lastName }"></td>
-        <td th:text="${c.phone}"></td>
-        <td th:text="${c.gender}"></td>
-    </tr>
-</table>
+<div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-4xl">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Clientes Cadastrados Hotel Itaipu</h1>
 
-<a th:href="@{/clients/new}">Cadastrar novo cliente</a>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead class="bg-sky-950 text-white">
+            <tr>
+                <th class="py-3 px-6 text-left">ID</th>
+                <th class="py-3 px-6 text-left">Nome</th>
+                <th class="py-3 px-6 text-left">Telefone</th>
+                <th class="py-3 px-6 text-left">Gênero</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${clients}" class="border-b hover:bg-sky-50">
+                <td class="py-3 px-6" th:text="${c.id}"></td>
+                <td class="py-3 px-6" th:text="${c.firstName + ' ' + c.lastName }"></td>
+                <td class="py-3 px-6" th:text="${c.phone}"></td>
+                <td class="py-3 px-6" th:text="${c.gender}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-6 space-y-4">
+        <a th:href="@{/clients/new}"
+           class="inline-block bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
+            Cadastrar novo cliente
+        </a>
+
+        <form th:action="@{/clients/detail}" method="get" class="inline-flex items-center space-x-2">
+            <label for="cpf" class="sr-only">CPF</label>
+            <input id="cpf" name="cpf" type="text" placeholder="Digite o CPF"
+                   class="border rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-700 text-black">
+            <button type="submit"
+                    class="bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+                Pesquisar
+            </button>
+        </form>
+
+    </div>
+</div>
+
 </body>
 </html>
