@@ -1,0 +1,2 @@
+ALTER TABLE tb_client
+ADD COLUMN phone CHAR(11) NOT NULL AFTER cpf;

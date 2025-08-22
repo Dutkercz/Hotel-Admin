@@ -16,9 +16,10 @@ public class Client {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String fistName;
+    private String firstName;
     private String lastName;
     private String cpf;
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     private ClientGenderEnum gender;
@@ -32,11 +33,12 @@ public class Client {
     public Client() {
     }
 
-    public Client(Long id, String fistName, String lastName, String cpf, ClientGenderEnum gender, Address address, ClientStatusEnum status) {
+    public Client(Long id, String firstName, String lastName, String cpf, String phone, ClientGenderEnum gender, Address address, ClientStatusEnum status) {
         this.id = id;
-        this.fistName = fistName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
+        this.phone = phone;
         this.gender = gender;
         this.address = address;
         this.status = status;
@@ -50,12 +52,12 @@ public class Client {
         this.id = id;
     }
 
-    public String getFistName() {
-        return fistName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFistName(String fistName) {
-        this.fistName = fistName;
+    public void setFirstName(String fistName) {
+        this.firstName = fistName;
     }
 
     public String getLastName() {
@@ -68,6 +70,18 @@ public class Client {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public ClientGenderEnum getGender() {
@@ -100,9 +114,10 @@ public class Client {
 
         Client client = (Client) o;
         return getId().equals(client.getId())
-                && Objects.equals(getFistName(), client.getFistName())
+                && Objects.equals(getFirstName(), client.getFirstName())
                 && Objects.equals(getLastName(), client.getLastName())
                 && Objects.equals(getCpf(), client.getCpf())
+                && Objects.equals(getPhone(), client.getPhone())
                 && getGender() == client.getGender()
                 && getStatus() == client.getStatus()
                 && Objects.equals(getAddress(), client.getAddress());
@@ -111,9 +126,10 @@ public class Client {
     @Override
     public int hashCode() {
         int result = getId().hashCode();
-        result = 31 * result + Objects.hashCode(getFistName());
+        result = 31 * result + Objects.hashCode(getFirstName());
         result = 31 * result + Objects.hashCode(getLastName());
         result = 31 * result + Objects.hashCode(getCpf());
+        result = 31 * result + Objects.hashCode(getPhone());
         result = 31 * result + Objects.hashCode(getGender());
         result = 31 * result + Objects.hashCode(getStatus());
         result = 31 * result + Objects.hashCode(getAddress());

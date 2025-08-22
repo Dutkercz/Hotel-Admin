@@ -1,0 +1,39 @@
+package hotel_admin.dutkercz.com.github.controller;
+
+import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.service.ClientService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/clients")
+public class ClientController {
+
+    private final ClientService clientService;
+
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    @GetMapping("/new")
+    public String showForm (Model model){
+        model.addAttribute("client", new Client());
+        return "client-form";
+    }
+
+    @PostMapping("/save")
+    public String saveClient(@ModelAttribute("client") Client client){
+        clientService.saveClient(client);
+        return "redirect:/clients/list";
+    }
+
+    @GetMapping("/list")
+    public String listClients(Model model){
+        model.addAttribute("clients", clientService.findAllClients());
+        return "client-list";
+    }
+}

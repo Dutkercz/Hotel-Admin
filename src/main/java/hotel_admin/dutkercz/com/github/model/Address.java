@@ -9,6 +9,7 @@ public class Address {
 
     private String street;
     private String number;
+    private String complement;
     private String district;
     private String city;
     private String state;
@@ -18,9 +19,10 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street, String number, String district, String city, String state, String country, String cep) {
+    public Address(String street, String number, String complement, String district, String city, String state, String country, String cep) {
         this.street = street;
         this.number = number;
+        this.complement = complement;
         this.district = district;
         this.city = city;
         this.state = state;
@@ -84,6 +86,14 @@ public class Address {
         this.cep = cep;
     }
 
+    public String getComplement() {
+        return complement;
+    }
+
+    public void setComplement(String complement) {
+        this.complement = complement;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -95,7 +105,8 @@ public class Address {
                 && Objects.equals(getCity(), address.getCity())
                 && Objects.equals(getState(), address.getState())
                 && Objects.equals(getCountry(), address.getCountry())
-                && Objects.equals(getCep(), address.getCep());
+                && Objects.equals(getCep(), address.getCep())
+                && Objects.equals(getComplement(), address.getComplement());
     }
 
     @Override
@@ -107,6 +118,7 @@ public class Address {
         result = 31 * result + Objects.hashCode(getState());
         result = 31 * result + Objects.hashCode(getCountry());
         result = 31 * result + Objects.hashCode(getCep());
+        result = 31 * result + Objects.hashCode(getComplement());
         return result;
     }
 }
