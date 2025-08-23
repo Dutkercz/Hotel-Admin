@@ -1,5 +1,6 @@
 package hotel_admin.dutkercz.com.github.controller;
 
+import com.sun.jdi.LongValue;
 import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import org.springframework.stereotype.Controller;
@@ -39,4 +40,15 @@ public class ClientController {
         model.addAttribute("clientFound", clientService.findByCpf(cpf));
         return "client-detail";
     }
+
+    @GetMapping("/update/{id}")
+    public String clientFormUpdate(@PathVariable Long id, Model model){
+        model.addAttribute("client", clientService.findByid(id));
+        return "client-update";
+    }
+
+//    @PostMapping("update")
+//    public String clientUpdate(@RequestParam("id") Long id, @ModelAttribute Client client){
+//        client = clientService.updateClient(client);
+//    }
 }

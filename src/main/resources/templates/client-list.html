@@ -18,6 +18,7 @@
                 <th class="py-3 px-6 text-left">Nome</th>
                 <th class="py-3 px-6 text-left">Telefone</th>
                 <th class="py-3 px-6 text-left">Gênero</th>
+                <td class="py-3 px-6 text-left">Opções</td>
             </tr>
             </thead>
             <tbody>
@@ -26,6 +27,15 @@
                 <td class="py-3 px-6" th:text="${c.firstName + ' ' + c.lastName }"></td>
                 <td class="py-3 px-6" th:text="${c.phone}"></td>
                 <td class="py-3 px-6" th:text="${c.gender}"></td>
+                <td>
+                    <button type="button" th:onclick="'window.location.href=\'' + @{/clients/update/{id}(id=${c.id})} + '\';'"
+                    class="w-25 bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+                        Atualizar</button>
+                    <!-- ... -->
+                    <button type="button" th:onclick="'window.location.href=\'' + @{/clients/delete/{id}(id=${c.id})}"
+                    class="w-25 bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+                        Deletar</button>
+                </td>
             </tr>
             </tbody>
         </table>

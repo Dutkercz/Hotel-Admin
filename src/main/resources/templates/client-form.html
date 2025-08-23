@@ -8,6 +8,11 @@
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
 <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
+    <div>
+        <button th:onclick="'window.location.href=\'' + @{/} + '\';'" type="button" th:method="GET"
+                class="mb-2 bg-sky-900 text-white px-4 py-2 rounded-lg shadow hover:bg-sky-950 transition">
+            Voltar</button>
+    </div>
     <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Cadastro de Clientes Hotel Itaipu</h1>
 
     <form th:action="@{/clients/save}" th:object="${client}" method="post" class="space-y-4">
