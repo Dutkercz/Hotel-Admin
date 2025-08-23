@@ -1,8 +1,10 @@
 package hotel_admin.dutkercz.com.github.controller;
 
 import com.sun.jdi.LongValue;
+import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,8 +49,9 @@ public class ClientController {
         return "client-update";
     }
 
-//    @PostMapping("update")
-//    public String clientUpdate(@RequestParam("id") Long id, @ModelAttribute Client client){
-//        client = clientService.updateClient(client);
-//    }
+    @PostMapping("/update/{id}")
+    public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate){
+        clientService.updateClient(id, clientUpdate);
+        return "redirect:/";
+    }
 }
