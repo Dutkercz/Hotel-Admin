@@ -5,6 +5,7 @@ import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +54,11 @@ public class ClientController {
     public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate){
         clientService.updateClient(id, clientUpdate);
         return "redirect:/";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> clientDelete(@PathVariable Long id){
+        clientService.deleteClient(id);
+        return ResponseEntity.noContent().build();
     }
 }

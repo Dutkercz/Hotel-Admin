@@ -3,6 +3,7 @@ package hotel_admin.dutkercz.com.github.service;
 import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.mapstruct.ClientMapper;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -49,5 +50,12 @@ public class ClientService {
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + id + " não encontrado"));
         clientMapper.updateEntityFromDto(clientUpdate, client);
         clientRepository.save(client);
+    }
+
+    @Transactional
+    public void deleteClient(Long id) {
+        var client = clientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + id + " não encontrado"));
+        clientRepository.inactiveClient(client.getId(), ClientStatusEnum.INACTIVE);
     }
 }
