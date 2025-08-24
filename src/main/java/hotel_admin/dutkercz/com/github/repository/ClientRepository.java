@@ -2,6 +2,8 @@ package hotel_admin.dutkercz.com.github.repository;
 
 import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             WHERE c.id = :id
             """)
     void inactiveClient(@Param("id") Long id, @Param("inactive") ClientStatusEnum inactive);
+
+    Page<Client> findAllByStatus(Pageable pageable, ClientStatusEnum active);
 }

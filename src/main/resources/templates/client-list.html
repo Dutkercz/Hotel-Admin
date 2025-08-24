@@ -5,40 +5,54 @@
     <meta charset="UTF-8"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
-
-<div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-4xl">
+<body class="bg-gray-700 min-h-screen flex items-center justify-center p-6">
+<div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-7xl">
     <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Clientes Cadastrados Hotel Itaipu</h1>
 
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+    <div class="overflow-x-auto w-full">
+        <table class="w-full bg-white rounded-lg overflow-auto">
             <thead class="bg-sky-950 text-white">
             <tr>
                 <th class="py-3 px-6 text-left">ID</th>
                 <th class="py-3 px-6 text-left">Nome</th>
+                <th class="py-3 px-6 text-left">CPF</th>
                 <th class="py-3 px-6 text-left">Telefone</th>
-                <th class="py-3 px-6 text-left">Gênero</th>
+                <td class="py-3 px-6 text-left">Status</td>
                 <td class="py-3 px-6 text-left">Opções</td>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="c : ${clients}" class="border-b hover:bg-sky-50">
+            <tr th:each="c : ${clients}" class="border-b hover:bg-sky-50"
+                th:with="clientStatus=${c.status}">
                 <td class="py-3 px-6" th:text="${c.id}"></td>
                 <td class="py-3 px-6" th:text="${c.firstName + ' ' + c.lastName }"></td>
+                <td class="py-3 px-6" th:text="${c.cpf}"></td>
                 <td class="py-3 px-6" th:text="${c.phone}"></td>
-                <td class="py-3 px-6" th:text="${c.gender}"></td>
+                <td class="py-3 px-6 text-center"
+                    th:text="${c.status == clientStatus.ACTIVE ? 'ATIVO' : c.status == clientStatus.INACTIVE ? 'INATIVO' : 'BANIDO'}"
+                    th:class="${c.status == clientStatus.ACTIVE ? 'text-green-500' : c.status == clientStatus.INACTIVE ? 'text-red-700' : 'text-black'}">
+                </td>
                 <td>
                     <button type="button" th:onclick="'window.location.href=\'' + @{/clients/update/{id}(id=${c.id})} + '\';'"
-                    class="w-25 bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+                            class="w-25 bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
                         Atualizar</button>
                     <!-- ... -->
                     <button type="button" th:onclick="'confirmDelete(' + ${c.id} + ');'"
-                    class="w-25 bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+                            class="w-25 bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
                         Deletar</button>
                 </td>
             </tr>
             </tbody>
         </table>
+        <div class="bg-white shadow-lg rounded-2xl p-3 w-full max-w-4xl">
+            <a th:if="${clients.hasPrevious()}" th:href="@{/clients/list(page=${clients.number - 1}, size=${clients.size})}"
+            class="w-28 bg-sky-900 px-3 py-1 text-white rounded-lg shadow hover:bg-sky-950 transition">Anterior</a>
+
+            <span>Página <span th:text="${clients.number + 1}"></span> de <span th:text="${clients.totalPages}"></span></span>
+
+            <a th:if="${clients.hasNext()}" th:href="@{/clients/list(page=${clients.number + 1}, size=${clients.size})}"
+               class="w-28 bg-sky-900 px-3 py-1 text-white rounded-lg shadow hover:bg-sky-950 transition">Próxima</a>
+        </div>
     </div>
 
     <div class="text-center mt-6 space-y-4">
@@ -46,17 +60,19 @@
            class="inline-block bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
             Cadastrar novo cliente
         </a>
+        <a th:href="@{/}"
+                class="inline-block bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
+            Página Inicial</a>
 
         <form th:action="@{/clients/detail}" method="get" class="inline-flex items-center space-x-2">
             <label for="cpf" class="sr-only">CPF</label>
             <input id="cpf" name="cpf" type="text" placeholder="Digite o CPF"
-                   class="border rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-700 text-black">
+                   class="border rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-700 text-center text-black">
             <button type="submit"
                     class="bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
                 Pesquisar
             </button>
         </form>
-
     </div>
 </div>
 <!-- Admito que precisei uma ajuda pra fazer esse script-->

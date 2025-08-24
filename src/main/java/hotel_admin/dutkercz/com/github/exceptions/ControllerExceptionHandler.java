@@ -1,4 +1,4 @@
-package hotel_admin.dutkercz.com.github;
+package hotel_admin.dutkercz.com.github.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

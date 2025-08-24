@@ -7,9 +7,9 @@ import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum.ACTIVE;
 
@@ -30,8 +30,8 @@ public class ClientService {
         clientRepository.save(client);
     }
 
-    public List<Client> findAllClients() {
-        return clientRepository.findAll().stream().filter(x -> x.getStatus().equals(ACTIVE)).toList();
+    public Page<Client> findAllClients(Pageable pageable) {
+        return clientRepository.findAll(pageable);
     }
 
     public Client findByCpf(String cpf) {

@@ -1,10 +1,11 @@
 package hotel_admin.dutkercz.com.github.controller;
 
-import com.sun.jdi.LongValue;
 import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +34,9 @@ public class ClientController {
     }
 
     @GetMapping("/list")
-    public String listClients(Model model){
-        model.addAttribute("clients", clientService.findAllClients());
+    public String listClients(Pageable pageable, Model model){
+        Page<Client> clients = clientService.findAllClients(pageable);
+        model.addAttribute("clients", clients);
         return "client-list";
     }
 
