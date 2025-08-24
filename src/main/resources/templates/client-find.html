@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Buscar Cliente</title>
+</head>
+<body>
+<div>
+    <h1>Atualizar Informações</h1>
+    <input type="text" id="cpf" name="cpf" placeholder="CPF somente números"
+           class="border rounded-lg px-2 py-1 text-black">
+    <button type="button"
+            onclick="window.location.href='/clients/find-client/update/' + document.getElementById('cpf').value"
+            class="w-25 bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
+        Buscar
+    </button>
+</div>
+</body>
+</html>

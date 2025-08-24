@@ -40,10 +40,16 @@ public class ClientController {
         return "client-list";
     }
 
-    @GetMapping("/detail")
-    public String findByCpf(@RequestParam("cpf") String cpf, Model model){
-        model.addAttribute("clientFound", clientService.findByCpf(cpf));
-        return "client-detail";
+    @GetMapping("/find-client")
+    public String findByCpfPage(){
+        return "client-find";
+    }
+
+    @GetMapping("/find-client/update/{cpf}")
+    public String findByCpf(@PathVariable("cpf") String cpf){
+        var client = clientService.findByCpf(cpf);
+        if (client == null) return "redirect:/clients/find-client";
+        return "redirect:/clients/update/" + client.getId();
     }
 
     @GetMapping("/update/{id}")

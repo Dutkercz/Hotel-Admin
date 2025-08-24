@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Client findByCpfAndStatus(String replaced, ClientStatusEnum active);
 
@@ -21,4 +23,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     void inactiveClient(@Param("id") Long id, @Param("inactive") ClientStatusEnum inactive);
 
     Page<Client> findAllByStatus(Pageable pageable, ClientStatusEnum active);
+
+    Optional<Client> findByCpf(String replaced);
 }

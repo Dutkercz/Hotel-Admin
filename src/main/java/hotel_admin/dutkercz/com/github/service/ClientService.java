@@ -36,7 +36,8 @@ public class ClientService {
 
     public Client findByCpf(String cpf) {
         var replaced = cpf.replaceAll("[.,-]", "");
-        return clientRepository.findByCpfAndStatus(replaced, ACTIVE);
+        return clientRepository.findByCpf(replaced)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente de CPF +" + replaced + " não encontrado"));
     }
 
     public Client findByid(Long id) {
