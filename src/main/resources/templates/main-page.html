@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home - Hotel Itaipu</title>
     <meta charset="UTF-8"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-700 min-h-screen flex items-center flex-col justify-between">
-<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full">
+
+<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full max-w-6xl mx-auto">
+
     <h1 class="text-sky-900 font-bold text-5xl text-center mb-6">Bem Vindo ao Sistema Hotel Itaipu</h1>
-    <div>
-        <h2 class="block text-gray-700 font-bold text-3xl mb-1">Administrar Clientes</h2>
-        <div class="flex flex-col space-y-2 w-60">
+
+    <!-- container para as seções -->
+    <div class="flex flex-wrap space-x-4 space-y-4 md:space-y-0">
+
+        <div class="flex flex-col space-y-2 w-full md:w-60">
+            <h2 class="block text-gray-700 font-bold text-3xl mb-1">Administrar Clientes</h2>
             <a th:href="@{/clients/new}"
                class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
                 Cadastro de Clientes</a>
@@ -23,18 +28,52 @@
                 Histórico de Clientes</a>
 
             <a th:href="@{/clients/find-client}"
-                class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">Atualizar Info. de Cliente</a>
+               class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
+                Atualizar Info. de Cliente</a>
+        </div>
+
+        <div class="flex-1 bg-gray-300 rounded-lg shadow-lg p-8">
+            <h3 class="text-2xl font-semibold text-center text-gray-700">Lista de Quartos</h3>
+            <table class="w-full rounded-lg overflow-auto">
+                <thead class="bg-sky-900 text-white">
+                <tr>
+                    <th class="py-3 px-6 text-left">Apto Nº</th>
+                    <th class="py-3 px-6 text-left">Cama de casal</th>
+                    <th class="py-3 px-6 text-left">Cama de solteiro</th>
+                    <th class="py-3 px-6 text-left">Status</th>
+                    <th class="py-3 px-6 text-left">Hospede Principal</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50">
+                        <td class="py-3 px-6" th:text="${r.number}"></td>
+                        <td class="py-3 px-6" th:text="${r.doubleBed + ' cama'}"></td>
+                        <td class="py-3 px-6" th:text="${r.singleBed + ' cama(s)'}"></td>
+                        <td class="py-3 px-6" th:text="${r.status}"></td>
+                        <td class="py-3 px-6" th:text="'cliente'"></td>
+
+                    </tr>
+                </tbody>
+
+
+            </table>
         </div>
 
     </div>
-
 </div>
-<footer class="w-full text-center py-4 bg-gray-800">
-    <h4 class="text-white font-semibold text-lg">Nos siga nas redes sociais</h4>
-    <br>
-    <a href="https://www.google.com" target="_blank" rel="noopener noreferrer"
-       class="text-white font-semibold px-4 py-2 bg-gradient-to-bl from-rose-950 via-red-800 to-blue-900 rounded hover:bg-pink-700 transition">
-        Instagram</a>
+
+<!-- Rodapé -->
+<footer class="w-full text-center py-2 bg-gray-800">
+    <div class="flex">
+        <h4 class="text-white font-semibold text-lg">Nos siga nas redes sociais</h4>
+        <a href="https://www.google.com" target="_blank" rel="noopener noreferrer"
+           class="text-white font-semibold ml-2 px-4 py-1 bg-gradient-to-bl from-rose-950 via-red-800 to-blue-900 rounded hover:bg-pink-700 transition">
+            Instagram</a>
+    </div>
+
+    <h5 class="p-2 text-gray-200 font-semi-bold">CNPJ: 88.727.599/0001-00</h5>
+
 </footer>
+
 </body>
 </html>
