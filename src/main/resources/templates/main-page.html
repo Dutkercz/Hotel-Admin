@@ -51,7 +51,8 @@
                         <td class="py-3 px-6" th:text="${r.doubleBed + ' cama'}"></td>
                         <td class="py-3 px-6" th:text="${r.singleBed + ' cama(s)'}"></td>
                         <td class="py-3 px-6"
-                            th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"></td>
+                            th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
+                            th:class="${r.status == roomStatus.AVAILABLE ? 'text-lime-700 font-bold' : r.status == roomStatus.OCCUPIED ? 'text-red-700 font-bold' : 'text-blue-800 font-bold'}"></td>
                         <td class="py-3 px-6" th:text="'cliente'"></td>
                     </tr>
                 </tbody>

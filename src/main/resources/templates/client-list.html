@@ -30,7 +30,7 @@
                 <td class="py-3 px-6" th:text="${c.phone}"></td>
                 <td class="py-3 px-6 text-center"
                     th:text="${c.status == clientStatus.ACTIVE ? 'ATIVO' : c.status == clientStatus.INACTIVE ? 'INATIVO' : 'BANIDO'}"
-                    th:class="${c.status == clientStatus.ACTIVE ? 'text-green-500' : c.status == clientStatus.INACTIVE ? 'text-red-700' : 'text-black'}">
+                    th:class="${c.status == clientStatus.ACTIVE ? 'text-green-500 font-bold' : c.status == clientStatus.INACTIVE ? 'text-red-700 font-bold' : 'text-black font-bold'}">
                 </td>
                 <td>
                     <button type="button" th:onclick="'window.location.href=\'' + @{/clients/update/{id}(id=${c.id})} + '\';'"
