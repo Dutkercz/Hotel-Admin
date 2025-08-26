@@ -58,12 +58,16 @@
                         <td>
                             <a  th:if="${r.status == roomStatus.AVAILABLE}"
                                 th:href="@{/}"
-                                class="bg-green-600 text-white rounded-lg px-2 py-1 hover:bg-green-700 transition"
+                                class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
                             >Check-in</a>
                             <a  th:if="${r.status == roomStatus.OCCUPIED}"
                                 th:href="@{/clients/new}"
-                                class="bg-red-600 text-white rounded-lg px-2 py-1 hover:bg-red-700 transition"
+                                class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
                             >Check-out</a>
+                            <br>
+                            <a th:href="@{/rooms/set-maintenance/r.getId}"
+                                class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
+                            >Manutenção</a>
                         </td>
                     </tr>
                 </tbody>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -24,5 +25,12 @@ public class RoomController {
     public String findAll(@ModelAttribute Model model){
         model.addAttribute("rooms", roomSevice.findAll());
         return "rooms";
+    }
+
+    @GetMapping("/set-maintenance/{id}")
+    public String changeMaintenanceStatus(@PathVariable Long id){
+        roomSevice.setStatus(Room.
+                )
+
     }
 }
