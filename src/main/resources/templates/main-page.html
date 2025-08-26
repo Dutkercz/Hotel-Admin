@@ -41,7 +41,8 @@
                     <th class="py-3 px-6 text-left">Cama de casal</th>
                     <th class="py-3 px-6 text-left">Cama de solteiro</th>
                     <th class="py-3 px-6 text-left">Status</th>
-                    <th class="py-3 px-6 text-left">Hospede Principal</th>
+                    <th class="py-3 px-6 text-left">Hóspede</th>
+                    <th class="py-3 px-6 text-left">Opções</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,9 +55,18 @@
                             th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
                             th:class="${r.status == roomStatus.AVAILABLE ? 'text-lime-700 font-bold' : r.status == roomStatus.OCCUPIED ? 'text-red-700 font-bold' : 'text-blue-800 font-bold'}"></td>
                         <td class="py-3 px-6" th:text="'cliente'"></td>
+                        <td>
+                            <a  th:if="${r.status == roomStatus.AVAILABLE}"
+                                th:href="@{/}"
+                                class="bg-green-600 text-white rounded-lg px-2 py-1 hover:bg-green-700 transition"
+                            >Check-in</a>
+                            <a  th:if="${r.status == roomStatus.OCCUPIED}"
+                                th:href="@{/clients/new}"
+                                class="bg-red-600 text-white rounded-lg px-2 py-1 hover:bg-red-700 transition"
+                            >Check-out</a>
+                        </td>
                     </tr>
                 </tbody>
-
 
             </table>
         </div>
