@@ -10,6 +10,10 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk
 
+ENV MYSQL_DATABASE=meubanco
+ENV MY_SQL_USERNAME=root
+ENV MY_SQL_PASSWORD=1234
+
 COPY --from=build target/*.jar hotel-system.jar
 
 ENTRYPOINT ["java", "-jar", "hotel-system.jar"]

@@ -5,9 +5,9 @@
     <meta charset="UTF-8"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-gray-700 min-h-screen flex items-center justify-center">
 
-<div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
+<div class="bg-gray-200 white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
     <div>
         <a th:href="@{/}"
                 class="mb-2 bg-sky-900 text-white px-4 py-2 rounded-lg shadow hover:bg-sky-950 transition">
@@ -20,25 +20,25 @@
         <div>
             <label class="block text-gray-700 font-medium mb-1">Nome</label>
             <input type="text" th:field="*{firstName}" placeholder="Digite seu primeiro nome"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
         </div>
 
         <div>
             <label class="block text-gray-700 font-medium mb-1">Sobrenome</label>
             <input type="text" th:field="*{lastName}" placeholder="Digite seu sobrenome"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
         </div>
 
         <div>
             <label class="block text-gray-700 font-medium mb-1">CPF (somente números)</label>
             <input type="text" th:field="*{cpf}" placeholder="xxx xxx xxx xx"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
         </div>
 
         <div>
             <label class="block text-gray-700 font-medium mb-1">Telefone</label>
             <input type="text" th:field="*{phone}" placeholder="(DDD) xxxxx xxxx"
-                   class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
         </div>
 
         <div>
@@ -66,49 +66,49 @@
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Rua</label>
                     <input type="text" th:field="*{address.street}" placeholder="Ex: Av. Brasil"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Número</label>
                     <input type="text" th:field="*{address.number}" placeholder="Ex: 1234"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Complemento</label>
                     <input type="text" th:field="*{address.complement}" placeholder="Ex: Casa, Apto nº, etc"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Bairro</label>
                     <input type="text" th:field="*{address.district}" placeholder="Ex: Centro"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Cidade</label>
                     <input type="text" th:field="*{address.city}" placeholder="Ex: Dom Pedrito"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">Estado</label>
                     <input type="text" th:field="*{address.state}" placeholder="Ex: Rio Grande do Sul"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">País</label>
                     <input type="text" th:field="*{address.country}" placeholder="Ex: Brasil"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">CEP</label>
                     <input type="text" th:field="*{address.cep}" placeholder="Ex. 99999-000"
-                           class="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
                 </div>
             </div>
         </div>

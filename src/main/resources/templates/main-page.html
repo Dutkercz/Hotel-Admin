@@ -32,7 +32,7 @@
                 Atualizar Info. de Cliente</a>
         </div>
 
-        <div class="flex-1 bg-gray-300 rounded-lg shadow-lg p-8">
+        <div class="flex-1 bg-gray-50 rounded-lg shadow-lg p-8">
             <h3 class="text-2xl font-semibold text-center text-gray-700">Lista de Quartos</h3>
             <table class="w-full rounded-lg overflow-auto">
                 <thead class="bg-sky-900 text-white">
@@ -45,13 +45,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50">
+                    <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50"
+                        th:with="roomStatus=${r.status}">
                         <td class="py-3 px-6" th:text="${r.number}"></td>
                         <td class="py-3 px-6" th:text="${r.doubleBed + ' cama'}"></td>
                         <td class="py-3 px-6" th:text="${r.singleBed + ' cama(s)'}"></td>
-                        <td class="py-3 px-6" th:text="${r.status}"></td>
+                        <td class="py-3 px-6"
+                            th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"></td>
                         <td class="py-3 px-6" th:text="'cliente'"></td>
-
                     </tr>
                 </tbody>
 
