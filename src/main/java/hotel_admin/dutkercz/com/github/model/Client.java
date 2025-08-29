@@ -4,6 +4,8 @@ import hotel_admin.dutkercz.com.github.model.enums.ClientGenderEnum;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -29,6 +31,9 @@ public class Client {
 
     @Embedded
     private Address address;
+
+    @OneToMany(mappedBy = "client")
+    private List<Stay> stays = new ArrayList<>();
 
     public Client() {
     }
@@ -108,6 +113,16 @@ public class Client {
         this.status = status;
     }
 
+    public void addStay(Stay stay) {
+        stays.add(stay);
+        stay.setClient(this);
+    }
+
+    public void removeStay(Stay stay) {
+        stays.remove(stay);
+        stay.setClient(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -135,4 +150,5 @@ public class Client {
         result = 31 * result + Objects.hashCode(getAddress());
         return result;
     }
+
 }

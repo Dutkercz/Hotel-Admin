@@ -3,6 +3,9 @@ package hotel_admin.dutkercz.com.github.model;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -19,6 +22,9 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     private RoomStatusEnum status;
+
+    @OneToMany(mappedBy = "room")
+    private List<Stay> stays = new ArrayList<>();
 
     public Room() {
     }
@@ -69,6 +75,17 @@ public class Room {
 
     public void setStatus(RoomStatusEnum status) {
         this.status = status;
+    }
+
+    public void removeStay(Stay stay){
+        stays.remove(stay);
+        stay.setRoom(null);
+
+    }
+
+    public void addStay(Stay stay){
+        stays.add(stay);
+        stay.setRoom(this);
     }
 
     @Override
