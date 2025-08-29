@@ -65,7 +65,7 @@
                                 class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
                             >Check-out</a>
                             <br>
-                            <a th:href="@{/rooms/set-maintenance/r.getId}"
+                            <a th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
                                 class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
                             >Manutenção</a>
                         </td>

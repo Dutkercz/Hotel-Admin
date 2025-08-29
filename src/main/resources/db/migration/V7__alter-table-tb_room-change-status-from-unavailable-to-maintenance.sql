@@ -1,0 +1,3 @@
+UPDATE tb_room
+SET status = 'MAINTENANCE'
+WHERE status = 'UNAVAILABLE';
