@@ -37,15 +37,15 @@
             <table class="w-full rounded-lg overflow-auto">
                 <thead class="bg-sky-900 text-white">
                 <tr>
-                    <th class="py-3 px-6 text-left">Apto Nº</th>
-                    <th class="py-3 px-6 text-left">Cama de casal</th>
-                    <th class="py-3 px-6 text-left">Cama de solteiro</th>
-                    <th class="py-3 px-6 text-left">Status</th>
-                    <th class="py-3 px-6 text-left">Hóspede</th>
-                    <th class="py-3 px-6 text-left">Opções</th>
+                    <th class="py-3 px-2 text-left">Apto Nº</th>
+                    <th class="py-3 px-4 text-left">Cama de casal</th>
+                    <th class="py-3 px-4 text-left">Cama de solteiro</th>
+                    <th class="py-3 px-4 text-left">Status</th>
+                    <th class="py-3 px-4 text-left">Hóspede</th>
+                    <th class="py-3 px-8 text-left">Opções</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="font-semibold">
                     <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50"
                         th:with="roomStatus=${r.status}">
                         <td class="py-3 px-6" th:text="${r.number}"></td>
@@ -55,7 +55,7 @@
                             th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
                             th:class="${r.status == roomStatus.AVAILABLE ? 'text-lime-700 font-bold' : r.status == roomStatus.OCCUPIED ? 'text-red-700 font-bold' : 'text-blue-800 font-bold'}"></td>
                         <td class="py-3 px-6" th:text="'cliente'"></td>
-                        <td>
+                        <td class="flex space-x-1 py-2">
                             <a  th:if="${r.status == roomStatus.AVAILABLE}"
                                 th:href="@{/}"
                                 class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
@@ -64,10 +64,14 @@
                                 th:href="@{/clients/new}"
                                 class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
                             >Check-out</a>
-                            <br>
-                            <a th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
-                                class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
+                            <a th:if="${r.status == roomStatus.AVAILABLE}"
+                               th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
+                               class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
                             >Manutenção</a>
+                            <a th:if="${r.status == roomStatus.MAINTENANCE}"
+                               th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
+                               class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
+                            >Habilitar Apto</a>
                         </td>
                     </tr>
                 </tbody>
