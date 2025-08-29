@@ -3,7 +3,9 @@ CREATE TABLE tb_stay(
     client_id BIGINT NOT NULL,
     room_id BIGINT NOT NULL,
     check_in DATE NOT NULL,
-    check_out DATE NOT NULL,
+    check_out DATE,
+    stay_price DECIMAL(8,2),
+    stay_quantity INT NOT NULL,
 
     CONSTRAINT fk_stay__client FOREIGN KEY (client_id) REFERENCES tb_client(id),
     CONSTRAINT fk_stay__room FOREIGN KEY (room_id) REFERENCES tb_room(id)

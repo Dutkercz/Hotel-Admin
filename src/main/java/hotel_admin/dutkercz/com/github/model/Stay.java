@@ -2,6 +2,7 @@ package hotel_admin.dutkercz.com.github.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +27,20 @@ public class Stay {
 
     private LocalDateTime checkIn;
     private LocalDateTime checkOut;
+    private BigDecimal stayPrice;
+    private Integer stayQuantity;
 
     public Stay() {
     }
 
-    public Stay(Long id, Client client, Room room, LocalDateTime checkIn, LocalDateTime checkOut) {
+    public Stay(Long id, Client client, Room room, LocalDateTime checkIn, LocalDateTime checkOut, BigDecimal stayPrice, Integer stayQuantity) {
         this.id = id;
         this.client = client;
         this.room = room;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        this.stayPrice = stayPrice;
+        this.stayQuantity = stayQuantity;
     }
 
     public Long getId() {
@@ -87,6 +92,21 @@ public class Stay {
         guests.remove(guest);
         guest.setStay(null);
    }
+    public BigDecimal getStayPrice() {
+        return stayPrice;
+    }
+
+    public void setStayPrice(BigDecimal stayPrice) {
+        this.stayPrice = stayPrice;
+    }
+
+    public Integer getStayQuantity() {
+        return stayQuantity;
+    }
+
+    public void setStayQuantity(Integer stayQuantity) {
+        this.stayQuantity = stayQuantity;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -97,7 +117,9 @@ public class Stay {
                 && Objects.equals(getClient(), stay.getClient())
                 && Objects.equals(getRoom(), stay.getRoom())
                 && Objects.equals(getCheckIn(), stay.getCheckIn())
-                && Objects.equals(getCheckOut(), stay.getCheckOut());
+                && Objects.equals(getCheckOut(), stay.getCheckOut())
+                && Objects.equals(getStayPrice(), stay.getStayPrice())
+                && Objects.equals(getStayQuantity(), stay.getStayQuantity());
     }
 
     @Override
@@ -107,6 +129,8 @@ public class Stay {
         result = 31 * result + Objects.hashCode(getRoom());
         result = 31 * result + Objects.hashCode(getCheckIn());
         result = 31 * result + Objects.hashCode(getCheckOut());
+        result = 31 * result + Objects.hashCode(getStayPrice());
+        result = 31 * result + Objects.hashCode(getStayQuantity());
         return result;
     }
 }
