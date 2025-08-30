@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum.ACTIVE;
 
 @Service
@@ -58,5 +60,9 @@ public class ClientService {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + id + " não encontrado"));
         clientRepository.inactiveClient(client.getId(), ClientStatusEnum.INACTIVE);
+    }
+
+    public List<Client> findAllActive() {
+        return clientRepository.findAllByStatus(ACTIVE);
     }
 }

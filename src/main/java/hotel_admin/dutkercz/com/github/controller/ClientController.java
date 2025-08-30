@@ -22,7 +22,7 @@ public class ClientController {
     }
 
     @GetMapping("/new")
-    public String showForm (Model model){
+    public String showClientForm(Model model){
         model.addAttribute("client", new Client());
         return "client-form";
     }

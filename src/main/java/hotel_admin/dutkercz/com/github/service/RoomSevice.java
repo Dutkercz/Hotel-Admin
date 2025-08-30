@@ -24,11 +24,17 @@ public class RoomSevice {
 
     @Transactional
     public void setMaintenanceStatus(Long id) {
-        var room = roomRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
+        var room = roomRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
         if (room.getStatus().equals(RoomStatusEnum.MAINTENANCE)){
             room.setStatus(RoomStatusEnum.AVAILABLE);
         }else {
             room.setStatus(RoomStatusEnum.MAINTENANCE);
         }
+    }
+
+    public Room findById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
     }
 }
