@@ -1,5 +1,6 @@
 package hotel_admin.dutkercz.com.github.exceptions;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,11 @@ public class ControllerExceptionHandler {
     public ResponseEntity<?> agumentExceptionHandler(MethodArgumentNotValidException e){
         var errors = e.getFieldErrors();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.stream().map(ParseError::new).toList());
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> entityNotFound(EntityNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + ". Volte a pagina e tente novamente" );
     }
 
     //Mapeia erros que podem ser mais de 1

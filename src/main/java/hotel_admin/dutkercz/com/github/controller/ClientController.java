@@ -2,6 +2,7 @@ package hotel_admin.dutkercz.com.github.controller;
 
 import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -21,18 +22,21 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    //entrega o formulario de cadastro
     @GetMapping("/new")
     public String showClientForm(Model model){
         model.addAttribute("client", new Client());
         return "client-form";
     }
 
+    //salva a cliente preenchida no formulario
     @PostMapping("/save")
     public String saveClient(@ModelAttribute("client") Client client){
         clientService.saveClient(client);
         return "redirect:/clients/list";
     }
 
+    //entrega uma lista de clientes
     @GetMapping("/list")
     public String listClients(Pageable pageable, Model model){
         Page<Client> clients = clientService.findAllClients(pageable);
@@ -40,11 +44,13 @@ public class ClientController {
         return "client-list";
     }
 
+    //entrega a pagina de busca por cpf
     @GetMapping("/find-client")
     public String findByCpfPage(){
         return "client-find";
     }
 
+    //redireciona para a pagina de update já com o cliente carregado
     @GetMapping("/find-client/update/{cpf}")
     public String findByCpf(@PathVariable("cpf") String cpf){
         var client = clientService.findByCpf(cpf);

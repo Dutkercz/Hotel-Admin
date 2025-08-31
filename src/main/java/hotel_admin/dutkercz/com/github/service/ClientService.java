@@ -38,8 +38,14 @@ public class ClientService {
 
     public Client findByCpf(String cpf) {
         var replaced = cpf.replaceAll("[.,-]", "");
-        return clientRepository.findByCpf(replaced)
+        System.out.println(replaced);
+        Client client = clientRepository.findByCpf(replaced)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de CPF +" + replaced + " não encontrado"));
+        if (client.getStatus().equals(ClientStatusEnum.BANNED)
+                || client.getStatus().equals(ClientStatusEnum.INACTIVE)) {
+            return null;
+        }
+        return client;
     }
 
     public Client findByid(Long id) {

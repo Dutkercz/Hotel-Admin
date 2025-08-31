@@ -1,9 +1,6 @@
 package hotel_admin.dutkercz.com.github.controller;
 
-import hotel_admin.dutkercz.com.github.model.Room;
-import hotel_admin.dutkercz.com.github.service.RoomSevice;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import hotel_admin.dutkercz.com.github.service.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +9,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rooms")
 public class RoomController {
 
-    private final RoomSevice roomSevice;
+    private final RoomService roomService;
 
-    public RoomController(RoomSevice roomSevice) {
-        this.roomSevice = roomSevice;
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
     }
 
     @GetMapping("/list")
     public String findAll(@ModelAttribute Model model){
-        model.addAttribute("rooms", roomSevice.findAll());
+        model.addAttribute("rooms", roomService.findAll());
         return "rooms";
     }
 
     @GetMapping("/set-maintenance/{id}")
     public String changeMaintenanceStatus(@PathVariable Long id){
-        roomSevice.setMaintenanceStatus(id);
+        roomService.setMaintenanceStatus(id);
         return "redirect:/";
     }
 }
