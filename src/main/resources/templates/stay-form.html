@@ -46,22 +46,44 @@
             <p class="font-semibold text-xl text-gray-700">
                 CPF: <span th:text="*{client.cpf}"></span>
             </p>
-        </div>
-        <div>
-            <p>Pessoas adicionais</p>
-            <select></select>
-        </div>
+            <div th:with="quant=${#numbers.sequence(0,3)}">
+                <p class="font-semibold text-xl text-gray-700">Pessoas adicionais</p>
+                <select id="additionalGuests" class="bg-gray-200 w-20 text-center">
+                    <option th:each="i : ${quant}" th:value="${i}" th:text="${i}"></option>
+                </select>
 
-        <input type="hidden" th:field="*{client.id}" />
+                <div id="extraInputs" class="mt-2 space-y-2"></div>
+            </div>
 
-        <div class="mt-4">
-            <button type="submit"
-                    class="w-full    bg-green-700 text-white px-3 py-2 rounded-lg shadow hover:bg-green-900 transition">
-                Confirmar Check-in
-            </button>
+            <input type="hidden" th:field="*{client.id}" />
+
+            <div class="mt-4">
+                <button type="submit"
+                        class="w-full    bg-green-700 text-white px-3 py-2 rounded-lg shadow hover:bg-green-900 transition">
+                    Confirmar Check-in
+                </button>
+            </div>
+
         </div>
     </form>
-
 </div>
+
+<script>
+    const select = document.getElementById('additionalGuests');
+    const container = document.getElementById('extraInputs');
+
+    select.addEventListener('change', () => {
+        container.innerHTML = '';
+        const quantidade = parseInt(select.value);
+        for (let i = 0; i < quantidade; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `extraPeople[${i}]`;
+            input.placeholder = `Nome da pessoa ${i+1}`;
+            input.className = 'border rounded px-2 py-1 w-full';
+            container.appendChild(input);
+        }
+    });
+</script>
 </body>
 </html>
