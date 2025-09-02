@@ -37,10 +37,10 @@ public class ClientService {
     }
 
     public Client findByCpf(String cpf) {
-        var replaced = cpf.replaceAll("[.,-]", "");
-        System.out.println(replaced);
-        Client client = clientRepository.findByCpf(replaced)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente de CPF +" + replaced + " não encontrado"));
+        var formattedCPF = cpf.replaceAll("[.,-]", "");
+        System.out.println(formattedCPF);
+        Client client = clientRepository.findByCpf(formattedCPF)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente de CPF " + formattedCPF + " não encontrado"));
         if (client.getStatus().equals(ClientStatusEnum.BANNED)
                 || client.getStatus().equals(ClientStatusEnum.INACTIVE)) {
             return null;

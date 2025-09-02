@@ -1,6 +1,7 @@
 package hotel_admin.dutkercz.com.github.model;
 
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
+import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -80,12 +81,19 @@ public class Room {
     public void removeStay(Stay stay){
         stays.remove(stay);
         stay.setRoom(null);
-
     }
 
     public void addStay(Stay stay){
         stays.add(stay);
         stay.setRoom(this);
+    }
+
+    @Transient
+    public Stay getCurrentStay() {
+        return stays.stream()
+                .filter(x -> x.getStatus() == StayStatusEnum.ACTIVE)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

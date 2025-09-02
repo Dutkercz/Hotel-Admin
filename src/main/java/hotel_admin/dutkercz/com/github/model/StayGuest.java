@@ -2,7 +2,6 @@ package hotel_admin.dutkercz.com.github.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
 
 //entidade que representa as pessoas adicionais no apto. Podendo ser mais de uma.
@@ -52,21 +51,4 @@ public class StayGuest {
         this.stay = stay;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        StayGuest stayGuest = (StayGuest) o;
-        return getId().equals(stayGuest.getId())
-                && Objects.equals(getName(), stayGuest.getName())
-                && Objects.equals(getStay(), stayGuest.getStay());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getId().hashCode();
-        result = 31 * result + Objects.hashCode(getName());
-        result = 31 * result + Objects.hashCode(getStay());
-        return result;
-    }
 }

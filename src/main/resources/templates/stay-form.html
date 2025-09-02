@@ -8,6 +8,9 @@
 <body class="bg-gray-700 min-h-screen flex items-center justify-center">
 
 <div class="bg-gray-200 shadow-lg p-8 rounded-lg w-full max-w-5xl">
+    <div>
+        <a class="bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition" th:href="@{/}">Página inicial</a>
+    </div>
 
     <h1 class="text-5xl font-bold mb-6 text-gray-800 text-center">Serviço de Hospedagem</h1>
 
@@ -41,25 +44,38 @@
 
         <div class="mt-2" th:if="*{client != null}">
             <p class="font-semibold text-xl text-gray-700">
-                Cliente: <span th:text="*{client.firstName}"></span>
+                Cliente: <span th:text="*{client.firstName + ' ' + client.lastName}"></span>
             </p>
             <p class="font-semibold text-xl text-gray-700">
                 CPF: <span th:text="*{client.cpf}"></span>
             </p>
             <div th:with="quant=${#numbers.sequence(0,3)}">
-                <p class="font-semibold text-xl text-gray-700">Pessoas adicionais</p>
-                <select id="additionalGuests" class="bg-gray-200 w-20 text-center">
+                <label class="font-semibold text-xl text-gray-700">Pessoas adicionais</label>
+                <select id="additionalGuests" class="bg-gray-100 w-20 text-center">
                     <option th:each="i : ${quant}" th:value="${i}" th:text="${i}"></option>
                 </select>
 
                 <div id="extraInputs" class="mt-2 space-y-2"></div>
             </div>
 
+            <div th:with="stayAmount=${#numbers.sequence(1,30)}">
+                <label for="stayAmount" class="font-semibold text-xl text-gray-700"> Quantidade de diárias</label>
+                <select id="stayAmount" th:field="*{stayAmount}" class="bg-gray-100 w-20 text-center">
+                        <!--th:field="*{stayAmount}" → vincula o valor selecionado ao atributo stayAmount no objeto Stay.-->
+                        <!--th:value="${i}" → o valor que será enviado no POST.-->
+                        <!--th:text="${i}" → o texto visível na tela.-->
+                    <option th:each="i : ${stayAmount}"
+                            th:value="${i}"
+                            th:text="${i}"
+                            class="bg-gray-200 w-32 text-center"></option>
+                </select>
+            </div>
+
             <input type="hidden" th:field="*{client.id}" />
 
             <div class="mt-4">
                 <button type="submit"
-                        class="w-full    bg-green-700 text-white px-3 py-2 rounded-lg shadow hover:bg-green-900 transition">
+                        class="w-full bg-green-700 text-white px-3 py-2 rounded-lg shadow hover:bg-green-900 transition">
                     Confirmar Check-in
                 </button>
             </div>
@@ -74,13 +90,13 @@
 
     select.addEventListener('change', () => {
         container.innerHTML = '';
-        const quantidade = parseInt(select.value);
-        for (let i = 0; i < quantidade; i++) {
+        const amount = parseInt(select.value);
+        for (let i = 0; i < amount; i++) {
             const input = document.createElement('input');
             input.type = 'text';
-            input.name = `extraPeople[${i}]`;
+            input.name = `guests[${i}].name`;
             input.placeholder = `Nome da pessoa ${i+1}`;
-            input.className = 'border rounded px-2 py-1 w-full';
+            input.className = 'border rounded px-2 py-1 w-full bg-gray-100';
             container.appendChild(input);
         }
     });

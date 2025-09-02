@@ -2,6 +2,7 @@ package hotel_admin.dutkercz.com.github.service;
 
 import hotel_admin.dutkercz.com.github.model.Room;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
+import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,7 +20,7 @@ public class RoomService {
     }
 
     public List<Room> findAll(){
-        return roomRepository.findAll();
+        return roomRepository.findAllWithActiveStaysOrEmpty(StayStatusEnum.ACTIVE);
     }
 
     @Transactional

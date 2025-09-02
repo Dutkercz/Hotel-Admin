@@ -35,6 +35,11 @@ public class StayController {
 
     @PostMapping("/save")
     public String saveStay(@ModelAttribute("stay") Stay stay){
+        if(stay.getGuests() != null){
+            stay.getGuests().forEach(x -> x.setStay(stay));
+        }
+        stay.getGuests().forEach(System.out::println);
+
         stayService.saveStay(stay);
         return "redirect:/";
     }

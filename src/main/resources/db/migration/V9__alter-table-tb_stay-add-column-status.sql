@@ -1,0 +1,2 @@
+ALTER TABLE tb_stay
+ADD COLUMN status VARCHAR(15) NOT NULL;
