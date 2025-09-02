@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -56,5 +55,13 @@ public class StayService {
         }else {
             return BigDecimal.valueOf(400.0 * stay.getStayAmount());
         }
+    }
+
+    @Transactional
+    public void addStay(Integer amount, Long roomId) {
+        Room room = roomService.findById(roomId);
+        Stay stay = room.getCurrentStay();
+        stay.setStayAmount(stay.getStayAmount() + amount);
+        stay.setStayPrice(calculateStayPrice(stay));
     }
 }

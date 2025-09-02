@@ -66,6 +66,10 @@
                             th:href="@{/clients/new}"
                             class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
                         >Check-out</a>
+                        <a  th:if="${r.status == roomStatus.OCCUPIED}"
+                            th:href="@{/stays/add-stay-amount/1(roomId=${r.id})}"
+                            class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
+                        >Diária +1</a>
                         <a th:if="${r.status == roomStatus.AVAILABLE}"
                            th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
                            class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
