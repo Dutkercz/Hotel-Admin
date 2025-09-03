@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-700 min-h-screen flex items-center flex-col justify-between">
 
-<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full max-w-7xl mx-auto">
+<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full max-w-8xl mx-auto">
 
     <h1 class="text-sky-900 font-bold text-5xl text-center mb-6">Bem Vindo ao Sistema Hotel Itaipu</h1>
 
@@ -38,8 +38,9 @@
                 <thead class="bg-sky-900 text-white">
                 <tr>
                     <th class="py-3 px-2 text-left">Apto Nº</th>
-                    <th class="py-3 px-4 text-left">Cama de casal</th>
-                    <th class="py-3 px-4 text-left">Cama de solteiro</th>
+                    <th class="py-3 px-4 text-left">Data Check-in</th>
+                    <th class="py-3 px-4 text-left">Prev. Check-out</th>
+                    <th class="py-3 px-4 text-left">Total de Diárias</th>
                     <th class="py-3 px-4 text-left">Status</th>
                     <th class="py-3 px-4 text-left">Hóspede</th>
                     <th class="py-3 px-4 text-left">Sub Total</th>
@@ -50,8 +51,14 @@
                 <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50"
                     th:with="roomStatus=${r.status}">
                     <td class="py-3 px-6" th:text="${r.number}"></td>
-                    <td class="py-3 px-6" th:text="${r.doubleBed + ' cama'}"></td>
-                    <td class="py-3 px-6" th:text="${r.singleBed + ' cama(s)'}"></td>
+                    <td class="py-3 px-6" th:text="${r.currentStay != null ? #temporals.format(r.currentStay.checkIn, 'dd/MM') : '-'}"></td>
+                    <td class="py-3 px-6" th:text="${r.currentStay != null ? #temporals.format(r.checkOutPrediction, 'dd/MM') : '-'}"></td>
+                    <td class="py-3 px-6 flex justify-center">
+                        <span th:text="${r.currentStay != null ? r.currentStay.stayAmount : '-'}"></span>
+                        <a th:if="${r.status == roomStatus.OCCUPIED}"
+                           th:href="@{/stays/add-stay-amount/1(roomId=${r.id})}"
+                           class="ml-1 bg-sky-100 text-white rounded-2xl text-center w-10 hover:bg-sky-400 transition">+1</a>
+                    </td>
                     <td class="py-3 px-6"
                         th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
                         th:class="${r.status == roomStatus.AVAILABLE ? 'text-lime-700 font-bold' : r.status == roomStatus.OCCUPIED ? 'text-red-700 font-bold' : 'text-blue-800 font-bold'}"></td>
@@ -66,10 +73,7 @@
                             th:href="@{/clients/new}"
                             class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
                         >Check-out</a>
-                        <a  th:if="${r.status == roomStatus.OCCUPIED}"
-                            th:href="@{/stays/add-stay-amount/1(roomId=${r.id})}"
-                            class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
-                        >Diária +1</a>
+
                         <a th:if="${r.status == roomStatus.AVAILABLE}"
                            th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
                            class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"

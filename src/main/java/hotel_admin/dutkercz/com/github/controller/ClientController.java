@@ -2,6 +2,7 @@ package hotel_admin.dutkercz.com.github.controller;
 
 import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import jakarta.validation.Valid;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/clients")
@@ -68,6 +71,13 @@ public class ClientController {
     public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate){
         clientService.updateClient(id, clientUpdate);
         return "redirect:/";
+    }
+
+    @GetMapping("/stays/history/{clientId}")
+    public String clientStayHistory(@PathVariable("clientId") Long clientId, Model model){
+        List<Stay> stays = clientService.findClientStays(clientId);
+        model.addAttribute("clientStays", stays);
+        return null;
     }
 
     @DeleteMapping("/delete/{id}")

@@ -3,6 +3,7 @@ package hotel_admin.dutkercz.com.github.service;
 import hotel_admin.dutkercz.com.github.dtos.ClientUpdate;
 import hotel_admin.dutkercz.com.github.mapstruct.ClientMapper;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -70,5 +71,15 @@ public class ClientService {
 
     public List<Client> findAllActive() {
         return clientRepository.findAllByStatus(ACTIVE);
+    }
+
+    public List<Stay> findClientStays(Long clientId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + clientId + " não encontrado"));
+
+        if (client.getStays() != null && !client.getStays().isEmpty()){
+            return client.getStays();
+        }
+        else return null;
     }
 }

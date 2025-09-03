@@ -4,6 +4,8 @@ import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,12 +90,21 @@ public class Room {
         stay.setRoom(this);
     }
 
+    //Evitar que a JPA tente mapear esse "CurrentStay" como uma coluna em Room no banco.
+    // Serve só para usar no thymeleaf pra capturar o nome do hospede atual.
     @Transient
     public Stay getCurrentStay() {
         return stays.stream()
                 .filter(x -> x.getStatus() == StayStatusEnum.ACTIVE)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transient
+    public LocalDateTime getCheckOutPrediction(){
+        var stay = getCurrentStay();
+        var stayAmount = stays.getLast().getStayAmount();
+        return stay.getCheckIn().plusDays(stayAmount);
     }
 
     @Override

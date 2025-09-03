@@ -1,7 +1,9 @@
 package hotel_admin.dutkercz.com.github.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -96,15 +98,16 @@ public class Stay {
         this.checkOut = checkOut;
     }
 
-   public void addGuest(StayGuest guest){
+    public void addGuest(StayGuest guest){
         guests.add(guest);
         guest.setStay(this);
-   }
+    }
 
-   public void removeGuest(StayGuest guest){
+    public void removeGuest(StayGuest guest){
         guests.remove(guest);
         guest.setStay(null);
-   }
+    }
+
     public BigDecimal getStayPrice() {
         return stayPrice;
     }

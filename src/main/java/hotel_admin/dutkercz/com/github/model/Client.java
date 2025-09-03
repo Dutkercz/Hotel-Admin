@@ -123,6 +123,10 @@ public class Client {
         stay.setClient(null);
     }
 
+    public List<Stay> getStays() {
+        return stays;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -10,7 +10,7 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk
 
-ENV MYSQL_DATABASE=meubanco
+ENV MYSQL_DATABASE=db_hotel_admin
 ENV MY_SQL_USERNAME=root
 ENV MY_SQL_PASSWORD=1234
 
