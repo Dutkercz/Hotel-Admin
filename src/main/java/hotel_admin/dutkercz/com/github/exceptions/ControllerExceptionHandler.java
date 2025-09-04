@@ -1,6 +1,7 @@
 package hotel_admin.dutkercz.com.github.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -19,7 +20,17 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFound(EntityNotFoundException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + ". Volte a pagina e tente novamente" );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + ". Volte a página e tente novamente" );
+    }
+
+    @ExceptionHandler(RoomConflictException.class)
+    public ResponseEntity<?> roomConflict(RoomConflictException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + ". Volte a página e escolha outro Apartamento" );
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> constraintViolation(ConstraintViolationException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     //Mapeia erros que podem ser mais de 1

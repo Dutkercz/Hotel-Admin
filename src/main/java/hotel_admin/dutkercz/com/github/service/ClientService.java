@@ -6,8 +6,12 @@ import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
+import hotel_admin.dutkercz.com.github.repository.StayRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -39,7 +43,6 @@ public class ClientService {
 
     public Client findByCpf(String cpf) {
         var formattedCPF = cpf.replaceAll("[.,-]", "");
-        System.out.println(formattedCPF);
         Client client = clientRepository.findByCpf(formattedCPF)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de CPF " + formattedCPF + " não encontrado"));
         if (client.getStatus().equals(ClientStatusEnum.BANNED)
@@ -73,13 +76,4 @@ public class ClientService {
         return clientRepository.findAllByStatus(ACTIVE);
     }
 
-    public List<Stay> findClientStays(Long clientId) {
-        Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + clientId + " não encontrado"));
-
-        if (client.getStays() != null && !client.getStays().isEmpty()){
-            return client.getStays();
-        }
-        else return null;
-    }
 }

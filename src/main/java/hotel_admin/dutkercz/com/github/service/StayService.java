@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class StayService {
@@ -63,5 +64,10 @@ public class StayService {
         Stay stay = room.getCurrentStay();
         stay.setStayAmount(stay.getStayAmount() + amount);
         stay.setStayPrice(calculateStayPrice(stay));
+    }
+
+    public List<Stay> findAllByClient(String cpf) {
+        var formattedCpf = cpf.replaceAll("[,.-]", "");
+        return stayRepository.findAllByClientCpf(formattedCpf);
     }
 }

@@ -5,17 +5,21 @@ import hotel_admin.dutkercz.com.github.model.Client;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import hotel_admin.dutkercz.com.github.service.ClientService;
+import hotel_admin.dutkercz.com.github.service.StayService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@Validated
 @RequestMapping("/clients")
 public class ClientController {
 
@@ -55,7 +59,7 @@ public class ClientController {
 
     //redireciona para a pagina de update já com o cliente carregado
     @GetMapping("/find-client/update/{cpf}")
-    public String findByCpf(@PathVariable("cpf") String cpf){
+    public String findByCpf(@PathVariable("cpf") @NotBlank String cpf){
         var client = clientService.findByCpf(cpf);
         if (client == null) return "redirect:/clients/find-client";
         return "redirect:/clients/update/" + client.getId();
@@ -71,13 +75,6 @@ public class ClientController {
     public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate){
         clientService.updateClient(id, clientUpdate);
         return "redirect:/";
-    }
-
-    @GetMapping("/stays/history/{clientId}")
-    public String clientStayHistory(@PathVariable("clientId") Long clientId, Model model){
-        List<Stay> stays = clientService.findClientStays(clientId);
-        model.addAttribute("clientStays", stays);
-        return null;
     }
 
     @DeleteMapping("/delete/{id}")
