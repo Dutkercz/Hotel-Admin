@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -19,8 +20,9 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> entityNotFound(EntityNotFoundException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage() + ". Volte a página e tente novamente" );
+    public String entityNotFound(EntityNotFoundException e, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("error", e.getMessage());
+        return "redirect:/clients/find-client";
     }
 
     @ExceptionHandler(RoomConflictException.class)

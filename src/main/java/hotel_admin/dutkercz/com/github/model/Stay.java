@@ -25,7 +25,7 @@ public class Stay {
     @ManyToOne
     private Room room;
 
-    @OneToMany(mappedBy = "stay", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "stay", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<StayGuest> guests = new ArrayList<>();
 
     private LocalDateTime checkIn;

@@ -57,11 +57,10 @@ public class ClientController {
         return "client-find";
     }
 
-    //redireciona para a pagina de update já com o cliente carregado
+    //redireciona para a pagina de update já com o cliente carregado se for válido
     @GetMapping("/find-client/update/{cpf}")
     public String findByCpf(@PathVariable("cpf") @NotBlank String cpf){
         var client = clientService.findByCpf(cpf);
-        if (client == null) return "redirect:/clients/find-client";
         return "redirect:/clients/update/" + client.getId();
     }
 
