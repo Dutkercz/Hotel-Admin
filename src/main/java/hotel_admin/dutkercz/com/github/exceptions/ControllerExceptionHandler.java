@@ -1,6 +1,7 @@
 package hotel_admin.dutkercz.com.github.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,10 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public String entityNotFound(EntityNotFoundException e, RedirectAttributes redirectAttributes){
+    public String entityNotFound(EntityNotFoundException e, RedirectAttributes redirectAttributes, HttpServletRequest request){
         redirectAttributes.addFlashAttribute("error", e.getMessage());
-        return "redirect:/clients/find-client";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
     }
 
     @ExceptionHandler(RoomConflictException.class)

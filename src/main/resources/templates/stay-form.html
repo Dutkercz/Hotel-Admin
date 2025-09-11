@@ -28,6 +28,11 @@
         </button>
     </div>
 
+    <div th:if="${error != null}"
+         class="mb-6 mt-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700 text-center font-semibold shadow">
+        <span th:text="${error}"></span>
+    </div>
+
     <form th:action="@{/stays/save}" th:object="${stay}" method="post">
         <p class="text-2xl font-semibold text-left text-gray-700">
             Hospedagem para o Apartamento <span th:text="*{room.number}"></span>

@@ -1,0 +1,6 @@
+ALTER TABLE tb_stay
+MODIFY COLUMN check_in DATETIME;
+
+ALTER TABLE tb_stay
+MODIFY COLUMN check_out DATETIME;
+

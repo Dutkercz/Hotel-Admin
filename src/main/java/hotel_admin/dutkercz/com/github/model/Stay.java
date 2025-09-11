@@ -1,9 +1,7 @@
 package hotel_admin.dutkercz.com.github.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -87,15 +85,19 @@ public class Stay {
     }
 
     public void setCheckIn(LocalDateTime checkIn) {
-        this.checkIn = checkIn;
+        if (checkIn.getHour() < 12){
+            this.checkIn = checkIn.minusDays(1);
+        }else {
+            this.checkIn = checkIn;
+        }
     }
 
     public LocalDateTime getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(LocalDateTime checkOut) {
-        this.checkOut = checkOut;
+    public void setCheckOut(LocalDateTime checkIn, Integer stayAmount) {
+        this.checkOut = checkIn.plusDays(stayAmount);
     }
 
     public void addGuest(StayGuest guest){

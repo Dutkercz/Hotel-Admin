@@ -12,7 +12,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -39,6 +42,7 @@ public class StayService {
         stay.setStatus(StayStatusEnum.ACTIVE);
         stay.setStayPrice(calculateStayPrice(stay));
         stay.setCheckIn(LocalDateTime.now());
+        stay.setCheckOut(stay.getCheckIn(), stay.getStayAmount());
         stay.setRoom(room);
         stay.setClient(client);
         stayRepository.save(stay);
@@ -63,11 +67,16 @@ public class StayService {
         Room room = roomService.findById(roomId);
         Stay stay = room.getCurrentStay();
         stay.setStayAmount(stay.getStayAmount() + amount);
+        stay.setCheckOut(stay.getCheckIn(), stay.getStayAmount());
         stay.setStayPrice(calculateStayPrice(stay));
     }
 
     public List<Stay> findAllByClient(String cpf) {
         var formattedCpf = cpf.replaceAll("[,.-]", "");
         return stayRepository.findAllByClientCpf(formattedCpf);
+    }
+
+    public List<Stay> findByActualMont(YearMonth actualMonth) {
+        return stayRepository.findAllByCheckInBetween(actualMonth.atDay(1).atStartOfDay(), actualMonth.atEndOfMonth().atTime(12, 0, 0));
     }
 }

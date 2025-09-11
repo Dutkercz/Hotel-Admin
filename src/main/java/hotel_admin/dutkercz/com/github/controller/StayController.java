@@ -15,7 +15,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 @Controller
 @Validated
@@ -88,6 +96,44 @@ public class StayController {
     public String listClientStaysPage(Model model){
         model.addAttribute("clientStays", List.of());
         return "client-stay_history";
+    }
+
+    @GetMapping("/monthly-grid")
+    public String monthlyGrid(Model model){
+        YearMonth actualMonth = YearMonth.now();
+        List<Integer> days = IntStream.rangeClosed(1, actualMonth.lengthOfMonth()).boxed().toList();
+
+        List<Room> rooms = roomService.findAll();
+        List<Stay> stays = stayService.findByActualMont(actualMonth);
+        Map<String, Map<Long, String>> statusMap = new HashMap<>();
+
+        for (Integer d : days){
+            Map<Long, String> dayMap = new HashMap<>();
+            for (Room r : rooms){
+                var status = "AVAILABLE";
+
+                if (r.getStatus() == RoomStatusEnum.MAINTENANCE){
+                    status = "MAINTENANCE";
+                }else {
+                    LocalDateTime actualDayOfMonth = actualMonth.atDay(d).atTime(12, 1);
+                    for (Stay s : stays){
+                        if (s.getRoom().getId().equals(r.getId()) && !actualDayOfMonth.isBefore(s.getCheckIn()) && !actualDayOfMonth.isAfter(s.getCheckOut())) {
+                            status = "OCCUPIED";
+                            break;
+                        }
+                    }
+                }
+                dayMap.put(r.getId(), status);
+            }
+
+            statusMap.put(d.toString(), dayMap);
+        }
+        model.addAttribute("actualMonth", actualMonth);
+        model.addAttribute("days", days);
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("statusMap", statusMap);
+        model.addAttribute("today", LocalDate.now().getDayOfMonth());
+        return "monthly-grid";
     }
 
 }
