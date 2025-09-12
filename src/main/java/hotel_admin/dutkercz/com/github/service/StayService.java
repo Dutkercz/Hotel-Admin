@@ -8,6 +8,7 @@ import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import hotel_admin.dutkercz.com.github.repository.StayRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -78,5 +79,12 @@ public class StayService {
 
     public List<Stay> findByActualMont(YearMonth actualMonth) {
         return stayRepository.findAllByCheckInBetween(actualMonth.atDay(1).atStartOfDay(), actualMonth.atEndOfMonth().atTime(12, 0, 0));
+    }
+
+    public Stay findByRoomId(Long roomId) {
+        Stay stay = stayRepository.findByRoomId(roomId)
+                .orElseThrow(() -> new EntityNotFoundException("Diária não encontrada"));
+        if (stay.getStatus().equals(StayStatusEnum.ACTIVE)) return stay;
+        return null;
     }
 }

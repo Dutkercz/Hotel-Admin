@@ -10,6 +10,7 @@ import hotel_admin.dutkercz.com.github.service.RoomService;
 import hotel_admin.dutkercz.com.github.service.StayService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.websocket.server.PathParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +49,8 @@ public class StayController {
         }
         Stay stay = new Stay();
         stay.setRoom(room);
+
+        model.addAttribute("date", LocalDate.now());
         model.addAttribute("stay", stay);
         return "stay-form";
     }
@@ -72,6 +75,7 @@ public class StayController {
         Client client = clientService.findByCpf(cpf);
         stay.setClient(client);
         model.addAttribute("stay", stay);
+        model.addAttribute("date", LocalDate.now());
 
         return "stay-form";
     }
@@ -113,7 +117,7 @@ public class StayController {
                 var status = "AVAILABLE";
 
                 LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
-                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && actualDayOfMonth.getDayOfMonth() >= referenceDay){
+                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && !actualDayOfMonth.isBefore(LocalDateTime.now())){
                     status = "MAINTENANCE";
                 }else {
                     for (Stay s : stays){
@@ -143,4 +147,9 @@ public class StayController {
         return "monthly-grid";
     }
 
+    @GetMapping("/checkout")
+    public String checkOut(@RequestParam Long roomId, Model model){
+        model.addAttribute("stay", stayService.findByRoomId(roomId));
+        return "stay-checkout";
+    }
 }

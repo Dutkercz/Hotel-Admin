@@ -3,103 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Hospedar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center justify-center">
+<body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8">
 
-<div class="bg-gray-200 shadow-lg p-8 rounded-lg w-full max-w-5xl">
-    <div>
-        <a class="bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition" th:href="@{/}">Página inicial</a>
+<div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-5xl">
+
+    <div class="flex items-center justify-between mb-8">
+        <a class="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105" th:href="@{/}">Página inicial</a>
     </div>
 
-    <h1 class="text-5xl font-bold mb-6 text-gray-800 text-center">Serviço de Hospedagem</h1>
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-800 text-center mb-10 drop-shadow-sm">Serviço de Hospedagem</h1>
 
-    <div class="mt-2 mb-2 bg-gray-300 rounded-lg shadow-lg p-8 w-full max-w-md mx-auto">
-        <h2 class="block text-gray-700 font-bold text-xl mb-1">Digite o CPF do Cliente</h2>
-        <input type="text" id="cpf" name="cpf" placeholder="somente números"
-               class="border rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-700 mb-4 w-full">
+    <div class="bg-slate-100 rounded-2xl shadow-inner p-8 w-full max-w-md mx-auto mb-8">
+        <h2 class="block text-slate-700 font-bold text-xl mb-3">Pesquisar Cliente por CPF</h2>
+        <div class="flex flex-col sm:flex-row gap-4">
+            <input type="text" id="cpf" name="cpf" placeholder="somente números"
+                   class="flex-1 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
 
-        <button type="button"
-                onclick="window.location.href='/stays/checkin/find-client/'
-                  + document.getElementById('cpf').value
-                  + '?roomId=' + document.getElementById('roomId').value"
-                class="w-full bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
-            Buscar
-        </button>
+            <input type="hidden" id="roomId" th:value="${stay.room.id}" />
+
+            <button type="button"
+                    onclick="window.location.href='/stays/checkin/find-client/'
+                      + document.getElementById('cpf').value
+                      + '?roomId=' + document.getElementById('roomId').value"
+                    class="w-full sm:w-auto bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105">
+                Buscar
+            </button>
+        </div>
     </div>
 
     <div th:if="${error != null}"
-         class="mb-6 mt-4 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700 text-center font-semibold shadow">
+         class="mb-6 p-4 rounded-xl bg-red-50 border border-red-300 text-red-600 text-center font-semibold shadow-sm">
         <span th:text="${error}"></span>
     </div>
 
     <form th:action="@{/stays/save}" th:object="${stay}" method="post">
-        <p class="text-2xl font-semibold text-left text-gray-700">
-            Hospedagem para o Apartamento <span th:text="*{room.number}"></span>
-        </p>
-        <p class="text-xl font-semibold text-left text-gray-700">
-            Cama de casal: <span th:text="*{room.doubleBed}"></span>
-        </p>
-        <p th:if="${stay.room.singleBed != '0'}"
-           class="text-xl font-semibold text-left text-gray-700">
-            Cama de Solteiro: <span th:text="*{room.singleBed}"></span>
-        </p>
+        <div class="space-y-6">
+            <div class="bg-slate-100 rounded-2xl shadow-inner p-8">
 
-        <input type="hidden" id="roomId" th:field="*{room.id}" />
+                <p class="text-xl font-bold text-slate-800 mb-2">
+                    Hospedagem para o Apartamento <span th:text="*{room.number}"></span>
+                </p>
 
-        <div class="mt-2" th:if="*{client != null}">
-            <p class="font-semibold text-xl text-gray-700">
-                Cliente: <span th:text="*{client.firstName + ' ' + client.lastName}"></span>
-            </p>
-            <p class="font-semibold text-xl text-gray-700">
-                CPF: <span th:text="*{client.cpf}"></span>
-            </p>
-            <div th:with="quant=${#numbers.sequence(0,3)}">
-                <label class="font-semibold text-xl text-gray-700">Pessoas adicionais</label>
-                <select id="additionalGuests" class="bg-gray-100 w-20 text-center">
-                    <option th:each="i : ${quant}" th:value="${i}" th:text="${i}"></option>
-                </select>
+                <p class="text-base font-semibold text-slate-700">
+                    Cama de casal: <span th:text="*{room.doubleBed}"></span>
+                </p>
 
-                <div id="extraInputs" class="mt-2 space-y-2"></div>
+                <p th:if="${stay.room.singleBed != '0'}"
+                class="text-base font-semibold text-slate-700">
+                Cama de Solteiro: <span th:text="*{room.singleBed}"></span>
+                </p>
+
+                <p class="text-base font-semibold text-slate-700">
+                    Check-In: <span th:text="${#temporals.format(date, 'dd/MM')}"></span>
+                </p>
             </div>
 
-            <div th:with="stayAmount=${#numbers.sequence(1,30)}">
-                <label for="stayAmount" class="font-semibold text-xl text-gray-700"> Quantidade de diárias</label>
-                <select id="stayAmount" th:field="*{stayAmount}" class="bg-gray-100 w-20 text-center">
-                        <!--th:field="*{stayAmount}" → vincula o valor selecionado ao atributo stayAmount no objeto Stay.-->
-                        <!--th:value="${i}" → o valor que será enviado no POST.-->
-                        <!--th:text="${i}" → o texto visível na tela.-->
-                    <option th:each="i : ${stayAmount}"
-                            th:value="${i}"
-                            th:text="${i}"
-                            class="bg-gray-200 w-32 text-center"></option>
-                </select>
+            <input type="hidden" id="roomIdForm" th:field="*{room.id}" />
+
+            <div th:if="*{client != null}" class="space-y-6">
+                <div class="bg-slate-100 rounded-2xl shadow-inner p-8">
+                    <p class="font-bold text-xl text-slate-800">
+                        Cliente: <span th:text="*{client.firstName + ' ' + client.lastName}"></span>
+                    </p>
+                    <p class="font-semibold text-base text-slate-700">
+                        CPF: <span th:text="*{client.cpf}"></span>
+                    </p>
+                </div>
+
+                <div class="bg-slate-100 rounded-2xl shadow-inner p-8">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <label for="additionalGuests" class="font-semibold text-slate-700">Pessoas adicionais:</label>
+                        <select id="additionalGuests" class="bg-white border border-slate-300 rounded-xl px-4 py-2 text-center text-slate-800">
+                            <option th:each="i : ${#numbers.sequence(0,3)}" th:value="${i}" th:text="${i}"></option>
+                        </select>
+                    </div>
+                    <div id="extraInputs" class="mt-4 space-y-4"></div>
+                </div>
+
+                <div class="bg-slate-100 rounded-2xl shadow-inner p-8">
+                    <div class="flex items-center space-x-4">
+                        <label for="stayAmount" class="font-semibold text-slate-700">Quantidade de diárias:</label>
+                        <select id="stayAmount" th:field="*{stayAmount}" class="bg-white border border-slate-300 rounded-xl px-4 py-2 text-center text-slate-800">
+                            <option th:each="i : ${#numbers.sequence(1,30)}"
+                                    th:value="${i}"
+                                    th:text="${i}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <input type="hidden" th:field="*{client.id}" />
+
+                <div class="mt-4 text-center">
+                    <button type="submit"
+                            class="w-full bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-emerald-700 transition-all transform hover:scale-105">
+                        Confirmar Check-in
+                    </button>
+                </div>
             </div>
-
-            <input type="hidden" th:field="*{client.id}" />
-
-            <div class="mt-4">
-                <button type="submit"
-                        class="w-full bg-green-700 text-white px-3 py-2 rounded-lg shadow hover:bg-green-900 transition">
-                    Confirmar Check-in
-                </button>
-            </div>
-
         </div>
     </form>
 </div>
-<!-- Rodapé -->
-<footer class="w-full text-center p-8 py-2 bg-gray-800 flex flex-col items-center justify-center mt-6">
-    <div class="flex items-center space-x-2">
-        <h4 class="text-white font-semibold text-lg">Nos siga nas redes sociais</h4>
-        <a href="https://www.google.com" target="_blank" rel="noopener noreferrer"
-           class="text-white font-semibold px-4 py-1 bg-gradient-to-bl from-rose-950 via-red-800 to-blue-900 rounded hover:bg-pink-700 transition">
-            Instagram</a>
-    </div>
-    <h5 class="p-2 text-gray-200 font-semi-bold">CNPJ: 88.727.599/0001-00</h5>
-</footer>
 
-<script>
+<script th:inline="javascript">
     const select = document.getElementById('additionalGuests');
     const container = document.getElementById('extraInputs');
 
@@ -111,7 +122,7 @@
             input.type = 'text';
             input.name = `guests[${i}].name`;
             input.placeholder = `Nome da pessoa ${i+1}`;
-            input.className = 'border rounded px-2 py-1 w-full bg-gray-100';
+            input.className = 'w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors';
             container.appendChild(input);
         }
     });
