@@ -3,53 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Grade de Reservas</title>
+    <style>
+        .table-cell-rounded {
+            @apply rounded-xl shadow-sm text-sm py-2 px-3 flex items-center justify-center font-medium;
+        }
+    </style>
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center flex-col p-6">
+<body class="bg-slate-50 min-h-screen flex items-center flex-col p-8">
 
-<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full max-w-8xl mx-auto">
+<div class="bg-white rounded-3xl shadow-2xl p-12 w-full max-w-7xl mx-auto my-12">
+    <h1 class="text-slate-800 font-extrabold text-5xl text-center mb-10 drop-shadow-sm">
+        Grade de Reservas
+    </h1>
 
-    <h1 class="text-sky-900 font-bold text-5xl text-center mb-6">Grade de Reservas</h1>
-
-    <div class="overflow-x-auto rounded-lg shadow-lg bg-white">
-        <table class="min-w-full text-center text-sm border-collapse">
-            <thead class="bg-sky-900 text-white rounded-t-lg">
+    <div class="overflow-x-auto rounded-3xl shadow-xl border border-slate-200">
+        <table class="min-w-full text-center text-sm">
+            <thead class="bg-indigo-600 text-white text-base">
             <tr>
-                <th class="py-3 px-2">Dia</th>
-                <th th:each="r : ${rooms}" th:text="${r.number}" class="py-3 px-4"></th>
+                <th class="py-4 px-4 font-bold rounded-tl-3xl">Dia</th>
+                <th th:each="r : ${rooms}" th:text="${r.number}" class="py-4 px-4 font-bold"
+                    th:classappend="${rStat.last ? 'rounded-tr-3xl' : ''}">
+                </th>
             </tr>
             </thead>
-            <tbody class="font-semibold">
+            <tbody class="divide-y divide-slate-200 text-slate-700">
             <tr th:each="d : ${days}"
-                th:class="${d == today} ? 'bg-green-100 shadow-inner rounded-lg' : 'hover:bg-gray-100 transition-all'">
+                th:class="${d == today} ? 'bg-blue-100 font-extrabold' : 'hover:bg-slate-50 transition-colors'">
+                <td class="px-4 py-3 border-r border-slate-200 font-bold"
+                    th:text="${d < 10 ? '0'+ d + '/' + actualMonth + '/' + actualYear : d + '/' + actualMonth + '/' + actualYear}"></td>
 
-                <!-- coluna dia -->
-                <td class="border border-sky-300 px-2 py-1 font-bold"
-                    th:text="${d + '/' + actualMonth.monthValue + '/' + actualMonth.year}"></td>
-
-                <!-- colunas dos quartos -->
                 <td th:each="room : ${rooms}" th:switch="${statusMap[d.toString()][room.id]}"
-                    class="px-2 py-1">
-                    <span th:case="'OCCUPIED'" class="block w-full h-full bg-red-200 py-2 rounded shadow-sm">Ocupado</span>
-                    <span th:case="'AVAILABLE'" class="block w-full h-full bg-green-200 py-2 rounded shadow-sm">Livre</span>
-                    <span th:case="'MAINTENANCE'" class="block w-full h-full bg-blue-400 py-2 rounded shadow-sm">Manutenção</span>
+                    class="px-4 py-2 border-r border-slate-200 last:border-r-0">
+                    <span th:case="'OCCUPIED'"
+                          class="table-cell-rounded bg-red-100 text-red-700 border border-red-200">
+                        Ocupado
+                    </span>
+                    <span th:case="'AVAILABLE'"
+                          class="table-cell-rounded bg-emerald-100 text-emerald-700 border border-emerald-200">
+                        Livre
+                    </span>
+                    <span th:case="'MAINTENANCE'"
+                          class="table-cell-rounded bg-amber-100 text-amber-700 border border-amber-200">
+                        Manutenção
+                    </span>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
 </div>
 
-<!-- Rodapé -->
-<footer class="w-full text-center p-8 py-2 bg-gray-800 flex flex-col items-center justify-center mt-6">
-    <div class="flex items-center space-x-2">
+<footer class="w-full text-center p-6 bg-slate-800 flex flex-col items-center justify-center mt-12">
+    <div class="flex items-center space-x-4 mb-2">
         <h4 class="text-white font-semibold text-lg">Nos siga nas redes sociais</h4>
         <a href="https://www.google.com" target="_blank" rel="noopener noreferrer"
-           class="text-white font-semibold px-4 py-1 bg-gradient-to-bl from-rose-950 via-red-800 to-blue-900 rounded hover:bg-pink-700 transition">
-            Instagram</a>
+           class="text-white font-semibold px-6 py-2 bg-gradient-to-tr from-purple-500 via-pink-500 to-yellow-500 rounded-full hover:shadow-lg transition-transform transform hover:scale-105">
+            Instagram
+        </a>
     </div>
-    <h5 class="p-2 text-gray-200 font-semi-bold">CNPJ: 88.727.599/0001-00</h5>
+    <h5 class="p-2 text-slate-400 font-normal text-sm">CNPJ: 88.727.599/0001-00</h5>
 </footer>
 
 </body>

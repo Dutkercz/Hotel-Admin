@@ -107,15 +107,15 @@ public class StayController {
         List<Stay> stays = stayService.findByActualMont(actualMonth);
         Map<String, Map<Long, String>> statusMap = new HashMap<>();
 
-        for (Integer d : days){
+        for (Integer referenceDay : days){
             Map<Long, String> dayMap = new HashMap<>();
             for (Room r : rooms){
                 var status = "AVAILABLE";
 
-                if (r.getStatus() == RoomStatusEnum.MAINTENANCE){
+                LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
+                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && actualDayOfMonth.getDayOfMonth() >= referenceDay){
                     status = "MAINTENANCE";
                 }else {
-                    LocalDateTime actualDayOfMonth = actualMonth.atDay(d).atTime(12, 1);
                     for (Stay s : stays){
                         if (s.getRoom().getId().equals(r.getId()) && !actualDayOfMonth.isBefore(s.getCheckIn()) && !actualDayOfMonth.isAfter(s.getCheckOut())) {
                             status = "OCCUPIED";
@@ -125,10 +125,17 @@ public class StayController {
                 }
                 dayMap.put(r.getId(), status);
             }
-
-            statusMap.put(d.toString(), dayMap);
+            statusMap.put(referenceDay.toString(), dayMap);
         }
-        model.addAttribute("actualMonth", actualMonth);
+
+        String actualMonthFormatted = actualMonth.getMonthValue() < 10 ? "0" + actualMonth.getMonthValue() : String.valueOf(actualMonth.getMonthValue());
+        var actualYear = actualMonth.getYear();
+
+        System.out.println("Monthvalue" + actualMonth.getMonthValue());
+        System.out.println("formatted" + actualMonthFormatted);
+
+        model.addAttribute("actualMonth", actualMonthFormatted);
+        model.addAttribute("actualYear", actualYear);
         model.addAttribute("days", days);
         model.addAttribute("rooms", rooms);
         model.addAttribute("statusMap", statusMap);

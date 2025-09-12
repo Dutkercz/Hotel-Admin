@@ -23,7 +23,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             """)
     void inactiveClient(@Param("id") Long id, @Param("inactive") ClientStatusEnum inactive);
 
-    List<Client> findAllByStatus(ClientStatusEnum active);
+    Page<Client> findAllByStatus(ClientStatusEnum active, Pageable pageable);
 
     Optional<Client> findByCpf(String replaced);
 }

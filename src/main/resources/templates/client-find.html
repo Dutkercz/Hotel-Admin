@@ -5,32 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Buscar Cliente</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center justify-center p-6">
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-8">
 
-<div class="w-full max-w-md">
+<div class="w-full max-w-lg mx-auto">
 
-    <h1 class="text-4xl font-extrabold text-white text-center mb-10 drop-shadow-lg">
+    <h1 class="text-4xl font-extrabold text-slate-800 text-center mb-10 drop-shadow-sm">
         Atualizar Cliente
     </h1>
 
-    <div class="bg-gray-200 rounded-2xl shadow-xl p-8 mb-6">
-        <h2 class="text-gray-800 font-bold text-2xl mb-4">Digite o CPF do Cliente</h2>
-        <input type="text" id="cpf" name="cpf" placeholder="somente números"
-               class="border border-gray-400 rounded-lg px-4 py-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-sky-700 shadow-sm text-gray-800">
+    <div class="bg-white rounded-3xl shadow-xl p-10 mb-6 border border-slate-200">
+        <h2 class="text-slate-700 font-bold text-2xl mb-6 text-center">Digite o CPF do Cliente</h2>
+        <input type="text" id="cpf" name="cpf" placeholder="Apenas números do CPF"
+               class="border border-slate-300 rounded-xl px-5 py-3 w-full mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
 
         <button type="button"
                 onclick="window.location.href='/clients/find-client/update/' + document.getElementById('cpf').value"
-                class="w-full bg-sky-900 text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-sky-950 transition">
+                class="w-full bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105">
             Buscar & Atualizar
         </button>
     </div>
 
     <div th:if="${error != null}"
-         class="mb-6 p-4 rounded-lg bg-red-100 border border-red-400 text-red-700 text-center font-semibold shadow">
+         class="mb-6 p-4 rounded-xl bg-red-50 border border-red-300 text-red-600 text-center font-semibold shadow-sm">
         <span th:text="${error}"></span>
     </div>
-
 </div>
 
 </body>

@@ -3,83 +3,143 @@
 <head>
     <title>Lista de Clientes</title>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .text-limitation {
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center justify-center p-6">
-<div class="bg-gray-200 shadow-lg rounded-2xl p-8 w-full max-w-7xl">
-    <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Clientes Cadastrados Hotel Itaipu</h1>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-8">
 
-    <div class="overflow-x-auto w-full">
-        <table class="w-full bg-gray-50 rounded-lg overflow-auto">
-            <thead class="bg-sky-950 text-white">
+<div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-7xl">
+    <h1 class="text-3xl font-extrabold text-slate-800 text-center mb-10 drop-shadow-sm">
+        Clientes Cadastrados
+    </h1>
+
+    <div class="overflow-x-auto rounded-3xl shadow-lg border border-slate-200">
+        <table class="w-full bg-white text-left">
+            <thead class="bg-indigo-600 text-white rounded-t-3xl text-base">
             <tr>
-                <th class="py-3 px-6 text-left">ID</th>
-                <th class="py-3 px-6 text-left">Nome</th>
-                <th class="py-3 px-6 text-left">CPF</th>
-                <th class="py-3 px-6 text-left">Telefone</th>
-                <th class="py-3 px-6 text-left">Status</th>
-                <th class="py-3 px-6 text-left">Opções</th>
+                <th class="py-4 px-6 font-bold rounded-tl-3xl">ID</th>
+                <th class="py-4 px-6 font-bold">Nome</th>
+                <th class="py-4 px-6 font-bold">CPF</th>
+                <th class="py-4 px-6 font-bold">Telefone</th>
+                <th class="py-4 px-6 text-center font-bold">Status</th>
+                <th class="py-4 px-6 text-center font-bold rounded-tr-3xl">Opções</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:each="c : ${clients}" class="border-b hover:bg-sky-50"
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+            <tr th:each="c : ${clients}" class="hover:bg-slate-50 transition-colors"
                 th:with="clientStatus=${c.status}">
-                <td class="py-3 px-6" th:text="${c.id}"></td>
-                <td class="py-3 px-6" th:text="${c.firstName + ' ' + c.lastName }"></td>
-                <td class="py-3 px-6" th:text="${c.cpf}"></td>
-                <td class="py-3 px-6" th:text="${c.phone}"></td>
-                <td class="py-3 px-6 text-center"
+                <td class="py-4 px-6" th:text="${c.id}"></td>
+                <td class="py-4 px-6" th:text="${c.firstName + ' ' + c.lastName }"></td>
+                <td class="py-4 px-6" th:text="${c.cpf}"></td>
+                <td class="py-4 px-6" th:text="${c.phone}"></td>
+                <td class="py-4 px-6 font-bold text-center"
                     th:text="${c.status == clientStatus.ACTIVE ? 'ATIVO' : c.status == clientStatus.INACTIVE ? 'INATIVO' : 'BANIDO'}"
-                    th:class="${c.status == clientStatus.ACTIVE ? 'text-lime-700 font-bold' : c.status == clientStatus.INACTIVE ? 'text-red-700 font-bold' : 'text-black font-bold'}">
+                    th:classappend="${c.status == clientStatus.ACTIVE ? 'text-emerald-600' : c.status == clientStatus.INACTIVE ? 'text-red-600' : 'text-slate-500'}">
                 </td>
-                <td>
+                <td class="py-4 px-6 flex flex-col sm:flex-row gap-2 items-center justify-center">
                     <button type="button" th:onclick="'window.location.href=\'' + @{/clients/update/{id}(id=${c.id})} + '\';'"
-                            class="w-25 bg-sky-900 text-white px-3 py-1 rounded-lg shadow hover:bg-sky-950 transition">
-                        Atualizar</button>
-                    <!-- ... -->
-                    <button type="button" th:onclick="'confirmDelete(' + ${c.id} + ');'"
-                            class="w-25 bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
-                        Deletar</button>
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105 w-full sm:w-auto">
+                        Atualizar
+                    </button>
+                    <button type="button" th:onclick="'showDeleteModal(' + ${c.id} + ');'"
+                            class="bg-red-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-red-700 transition-all font-semibold transform hover:scale-105 w-full sm:w-auto">
+                        Deletar
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="bg-white shadow-lg rounded-2xl p-3 w-full max-w-4xl">
-            <a th:if="${clients.hasPrevious()}" th:href="@{/clients/list(page=${clients.number - 1}, size=${clients.size})}"
-            class="w-28 bg-sky-900 px-3 py-1 text-white rounded-lg shadow hover:bg-sky-950 transition">Anterior</a>
-
-            <span>Página <span th:text="${clients.number + 1}"></span> de <span th:text="${clients.totalPages}"></span></span>
-
-            <a th:if="${clients.hasNext()}" th:href="@{/clients/list(page=${clients.number + 1}, size=${clients.size})}"
-               class="w-28 bg-sky-900 px-3 py-1 text-white rounded-lg shadow hover:bg-sky-950 transition">Próxima</a>
-        </div>
     </div>
 
-    <div class="text-center mt-6 space-y-4">
-        <a th:href="@{/clients/new}"
-           class="inline-block bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
-            Cadastrar novo cliente
-        </a>
-        <a th:href="@{/}"
-                class="inline-block bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
-            Página Inicial</a>
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="flex items-center space-x-4">
+            <a th:if="${clients.hasPrevious()}" th:href="@{/clients/list(page=${clients.number - 1}, size=${clients.size})}"
+               class="bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold">Anterior</a>
 
-        <form th:action="@{/clients/detail}" method="get" class="inline-flex items-center space-x-2">
+            <span class="text-lg font-medium text-slate-700">Página <span th:text="${clients.number + 1}"></span> de <span th:text="${clients.totalPages}"></span></span>
+
+            <a th:if="${clients.hasNext()}" th:href="@{/clients/list(page=${clients.number + 1}, size=${clients.size})}"
+               class="bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold">Próxima</a>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+            <a th:href="@{/clients/new}"
+               class="bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
+                + Novo Cliente
+            </a>
+            <a th:href="@{/}"
+               class="bg-slate-700 text-white px-6 py-2 rounded-xl shadow-md hover:bg-slate-800 transition-all font-semibold transform hover:scale-105">
+                Página Inicial
+            </a>
+        </div>
+
+        <form th:action="@{/clients/detail}" method="get" class="flex items-center space-x-2 w-full sm:w-auto">
             <label for="cpf" class="sr-only">CPF</label>
-            <input id="cpf" name="cpf" type="text" placeholder="Digite o CPF"
-                   class="border rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-sky-700 text-center text-black">
+            <input id="cpf" name="cpf" type="text" placeholder="Pesquisar por CPF"
+                   class="w-full sm:w-auto border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
             <button type="submit"
-                    class="bg-sky-900 text-white px-4 py-1 rounded-lg shadow hover:bg-sky-950 transition">
-                Pesquisar
+                    class="bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold">
+                Buscar
             </button>
         </form>
     </div>
 </div>
 
-<script>
-    function confirmDelete(id) {
-        if (confirm("Tem certeza que deseja deletar este cliente?")) {
-            fetch(`/clients/delete/${id}`, {
+<div id="deleteModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ease-in-out">
+    <div class="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-in-out">
+        <div class="text-center">
+            <svg class="mx-auto mb-4 text-red-500 w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4.962A8.995 8.995 0 0112 3a9.002 9.002 0 017.938 4.962m-13.876 0A9.002 9.002 0 0112 3a9.002 9.002 0 017.938 4.962m-13.876 0A9.002 9.002 0 0112 3a9.002 9.002 0 017.938 4.962"></path>
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Tem certeza?</h3>
+            <p class="text-sm text-gray-500 mb-6">Esta ação não pode ser desfeita. O cliente será permanentemente deletado.</p>
+            <div class="flex justify-center gap-4">
+                <button id="confirmDeleteButton" class="bg-red-600 text-white font-semibold px-6 py-2 rounded-xl shadow-md hover:bg-red-700 transition-all transform hover:scale-105">
+                    Deletar
+                </button>
+                <button onclick="hideDeleteModal()" class="bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-xl shadow-md hover:bg-gray-400 transition-all transform hover:scale-105">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    let deleteId = null;
+    const modal = document.getElementById('deleteModal');
+    const confirmBtn = document.getElementById('confirmDeleteButton');
+
+    function showDeleteModal(id) {
+        deleteId = id;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+        }, 10);
+    }
+
+    function hideDeleteModal() {
+        modal.querySelector('div').classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            deleteId = null;
+        }, 300);
+    }
+
+    confirmBtn.addEventListener('click', () => {
+        if (deleteId) {
+            fetch(`/clients/delete/${deleteId}`, {
                 method: 'DELETE'
             })
             .then(response => {
@@ -88,14 +148,16 @@
                     location.reload();
                 } else {
                     alert("Ocorreu um erro ao deletar o cliente.");
+                    hideDeleteModal();
                 }
             })
             .catch(error => {
                 console.error(error);
                 alert("Ocorreu um erro ao deletar o cliente.");
+                hideDeleteModal();
             });
         }
-    }
+    });
 </script>
 </body>
 </html>

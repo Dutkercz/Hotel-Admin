@@ -3,125 +3,131 @@
 <head>
     <title>Cadastrar Cliente</title>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center justify-center">
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-8">
 
-<div class="bg-gray-200 white shadow-lg rounded-2xl p-8 w-full max-w-2xl">
-    <div>
+<div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-2xl">
+    <div class="flex items-center justify-between mb-8">
         <a th:href="@{/}"
-                class="mb-2 bg-sky-900 text-white px-4 py-2 rounded-lg shadow hover:bg-sky-950 transition">
-            Voltar</a>
+           class="bg-indigo-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
+            Voltar
+        </a>
     </div>
-    <h1 class="text-2xl font-bold mb-6 text-gray-800 text-center">Cadastro de Clientes Hotel Itaipu</h1>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 text-center mb-10 drop-shadow-sm">
+        Cadastro de Clientes Hotel Itaipu
+    </h1>
 
-    <form th:action="@{/clients/save}" th:object="${client}" method="post" class="space-y-4">
+    <form th:action="@{/clients/save}" th:object="${client}" method="post" class="space-y-6">
 
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Nome</label>
+            <label class="block text-slate-700 font-medium mb-2">Nome</label>
             <input type="text" th:field="*{firstName}" placeholder="Digite seu primeiro nome"
-                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors" required>
         </div>
 
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Sobrenome</label>
+            <label class="block text-slate-700 font-medium mb-2">Sobrenome</label>
             <input type="text" th:field="*{lastName}" placeholder="Digite seu sobrenome"
-                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors" required>
         </div>
 
         <div>
-            <label class="block text-gray-700 font-medium mb-1">CPF (somente números)</label>
-            <input type="text" th:field="*{cpf}" placeholder="xxx xxx xxx xx"
-                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+            <label class="block text-slate-700 font-medium mb-2">CPF (somente números)</label>
+            <input type="text" th:field="*{cpf}" placeholder="12345678910"
+                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors" required>
         </div>
 
         <div>
-            <label class="block text-gray-700 font-medium mb-1">Telefone</label>
-            <input type="text" th:field="*{phone}" placeholder="(DDD) xxxxx xxxx"
-                   class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700" required>
+            <label class="block text-slate-700 font-medium mb-2">Telefone</label>
+            <input type="text" th:field="*{phone}" placeholder="(99) 99999-9999"
+                   class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors" required>
         </div>
 
         <div>
-            <label class="block text-gray-700 font-medium mb-2">Sexo</label>
-            <div class="flex space-x-4">
-                <label class="flex items-center space-x-2">
-                    <input name="gender" type="radio" th:field="*{gender}" value="MALE" class="text-sky-500">
+            <label class="block text-slate-700 font-medium mb-2">Sexo</label>
+            <div class="flex flex-wrap gap-6">
+                <label class="flex items-center space-x-2 text-slate-700">
+                    <input name="gender" type="radio" th:field="*{gender}" value="MALE" class="text-indigo-600 h-4 w-4">
                     <span>Masculino</span>
                 </label>
-                <label class="flex items-center space-x-2">
-                    <input name="gender" type="radio" th:field="*{gender}" value="FEMALE" class="text-sky-500">
+                <label class="flex items-center space-x-2 text-slate-700">
+                    <input name="gender" type="radio" th:field="*{gender}" value="FEMALE" class="text-indigo-600 h-4 w-4">
                     <span>Feminino</span>
                 </label>
-                <label class="flex items-center space-x-2">
-                    <input name="gender" type="radio" th:field="*{gender}" value="OTHERS" class="text-sky-500">
+                <label class="flex items-center space-x-2 text-slate-700">
+                    <input name="gender" type="radio" th:field="*{gender}" value="OTHERS" class="text-indigo-600 h-4 w-4">
                     <span>Outro</span>
                 </label>
             </div>
         </div>
 
-        <div class="pt-4 border-t">
-            <h2 class="text-lg font-semibold text-gray-800 mb-3">Endereço</h2>
+        <div class="pt-6 border-t border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Endereço</h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Rua</label>
+                    <label class="block text-slate-700 font-medium mb-2">Rua</label>
                     <input type="text" th:field="*{address.street}" placeholder="Ex: Av. Brasil"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Número</label>
+                    <label class="block text-slate-700 font-medium mb-2">Número</label>
                     <input type="text" th:field="*{address.number}" placeholder="Ex: 1234"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Complemento</label>
+                    <label class="block text-slate-700 font-medium mb-2">Complemento</label>
                     <input type="text" th:field="*{address.complement}" placeholder="Ex: Casa, Apto nº, etc"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Bairro</label>
+                    <label class="block text-slate-700 font-medium mb-2">Bairro</label>
                     <input type="text" th:field="*{address.district}" placeholder="Ex: Centro"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Cidade</label>
+                    <label class="block text-slate-700 font-medium mb-2">Cidade</label>
                     <input type="text" th:field="*{address.city}" placeholder="Ex: Dom Pedrito"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Estado</label>
+                    <label class="block text-slate-700 font-medium mb-2">Estado</label>
                     <input type="text" th:field="*{address.state}" placeholder="Ex: Rio Grande do Sul"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">País</label>
+                    <label class="block text-slate-700 font-medium mb-2">País</label>
                     <input type="text" th:field="*{address.country}" placeholder="Ex: Brasil"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">CEP</label>
+                    <label class="block text-slate-700 font-medium mb-2">CEP</label>
                     <input type="text" th:field="*{address.cep}" placeholder="Ex. 99999-000"
-                           class="w-full bg-gray-50 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-sky-700">
+                           class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
                 </div>
             </div>
         </div>
 
-        <div class="text-center">
+        <div class="text-center pt-6">
             <button type="submit"
-                    class="mt-6 bg-sky-900 text-white px-6 py-2 rounded-lg shadow hover:bg-sky-950 transition">
+                    class="w-full bg-indigo-600 text-white px-8 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
                 Cadastrar
             </button>
         </div>
 
     </form>
 </div>
-
 </body>
 </html>

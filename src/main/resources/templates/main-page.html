@@ -1,107 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home - Hotel Itaipu</title>
     <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-700 min-h-screen flex items-center flex-col justify-between">
+<body class="bg-slate-50 min-h-screen flex items-center flex-col justify-between p-8">
 
-<div class="bg-gray-200 rounded-lg shadow-lg p-8 w-full max-w-8xl mx-auto">
+<div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-8xl mx-auto my-12">
 
-    <h1 class="text-sky-900 font-bold text-5xl text-center mb-6">Bem Vindo ao Sistema Hotel Itaipu</h1>
+    <h1 class="text-slate-800 font-extrabold text-4xl sm:text-5xl text-center mb-10 drop-shadow-sm">Bem Vindo ao Sistema Hotel Itaipu</h1>
 
-    <!-- container para as seções -->
-    <div class="flex flex-wrap space-x-4 space-y-4 md:space-y-0">
+    <div class="flex flex-col lg:flex-row gap-8">
 
-        <div class="flex flex-col space-y-2 w-full md:w-60">
-            <h2 class="block text-gray-700 font-bold text-3xl mb-1">Administrar Clientes</h2>
+        <div class="flex flex-col space-y-4 w-full lg:w-60 bg-slate-100 rounded-2xl shadow-inner p-6">
+            <h2 class="block text-slate-700 font-bold text-2xl mb-1">Administrar Clientes</h2>
             <a th:href="@{/clients/new}"
-               class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
+               class="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
                 Cadastro de Clientes</a>
 
             <a th:href="@{/clients/list}"
-               class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
+               class="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
                 Clientes cadastrados</a>
 
             <a th:href="@{/stays/client-history}"
-                class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
+               class="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
                 Histórico de Clientes</a>
 
             <a th:href="@{/clients/find-client}"
-               class="px-4 py-2 bg-sky-900 text-white rounded hover:bg-sky-950 transition">
+               class="px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-md hover:bg-indigo-700 transition-all font-semibold transform hover:scale-105">
                 Atualizar Info. de Cliente</a>
         </div>
 
-        <div class="flex-1 bg-gray-50 rounded-lg shadow-lg p-8">
-            <h3 class="text-2xl font-semibold text-center text-gray-700">Lista de Quartos</h3>
-            <table class="w-full rounded-lg overflow-auto">
-                <thead class="bg-sky-900 text-white">
-                <tr>
-                    <th class="py-3 px-2 text-left">Apto Nº</th>
-                    <th class="py-3 px-4 text-left">Data Check-in</th>
-                    <th class="py-3 px-4 text-left">Prev. Check-out</th>
-                    <th class="py-3 px-4 text-left">Total de Diárias</th>
-                    <th class="py-3 px-4 text-left">Status</th>
-                    <th class="py-3 px-4 text-left">Hóspede</th>
-                    <th class="py-3 px-4 text-left">Sub Total</th>
-                    <th class="py-3 px-8 text-left">Opções</th>
-                </tr>
-                </thead>
-                <tbody class="font-semibold">
-                <tr th:each="r : ${rooms}" class="border-b hover:bg-sky-50"
-                    th:with="roomStatus=${r.status}">
-                    <td class="py-3 px-6" th:text="${r.number}"></td>
-                    <td class="py-3 px-6" th:text="${r.currentStay != null ? #temporals.format(r.currentStay.checkIn, 'dd/MM') : '-'}"></td>
-                    <td class="py-3 px-6" th:text="${r.currentStay != null ? #temporals.format(r.checkOutPrediction, 'dd/MM') : '-'}"></td>
-                    <td class="py-3 px-6 flex justify-center">
-                        <span th:text="${r.currentStay != null ? r.currentStay.stayAmount : '-'}"></span>
-                        <a th:if="${r.status == roomStatus.OCCUPIED}"
-                           th:href="@{/stays/add-stay-amount/1(roomId=${r.id})}"
-                           class="ml-1 bg-sky-100 text-white rounded-2xl text-center w-10 hover:bg-sky-400 transition">+1</a>
-                    </td>
-                    <td class="py-3 px-6"
-                        th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
-                        th:class="${r.status == roomStatus.AVAILABLE ? 'text-lime-700 font-bold' : r.status == roomStatus.OCCUPIED ? 'text-red-700 font-bold' : 'text-blue-800 font-bold'}"></td>
-                    <td class="py-3 px-6" th:text="${r.currentStay != null ? r.currentStay.client.firstName : '-'}"></td>
-                    <td class="py-3 px-6" th:text="${r.currentStay != null ? r.currentStay.stayPrice : '-'}"></td>
-                    <td class="flex space-x-1 py-2">
-                        <a  th:if="${r.status == roomStatus.AVAILABLE}"
-                            th:href="@{/stays/new(roomId=${r.id})}"
-                            class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
-                        >Check-in</a>
-                        <a  th:if="${r.status == roomStatus.OCCUPIED}"
-                            th:href="@{/clients/new}"
-                            class="bg-yellow-600 text-white rounded-lg px-2 py-1 hover:bg-yellow-700 transition"
-                        >Check-out</a>
+        <div class="flex-1 bg-white rounded-3xl shadow-lg p-8 border border-slate-200">
+            <h3 class="text-2xl font-bold text-center text-slate-800 mb-6">Lista de Quartos</h3>
+            <div class="overflow-x-auto rounded-2xl">
+                <table class="w-full text-sm rounded-lg overflow-hidden">
+                    <thead class="bg-indigo-600 text-white">
+                    <tr>
+                        <th class="py-4 px-3 text-left">Apto Nº</th>
+                        <th class="py-4 px-4 text-left">Check-in</th>
+                        <th class="py-4 px-4 text-left">Prev. Check-out</th>
+                        <th class="py-4 px-4 text-left">Total Diárias</th>
+                        <th class="py-4 px-4 text-left">Status</th>
+                        <th class="py-4 px-4 text-left">Hóspede</th>
+                        <th class="py-4 px-4 text-left">Sub Total</th>
+                        <th class="py-4 px-4 text-center">Opções</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 text-slate-700 font-medium">
+                    <tr th:each="r : ${rooms}" class="hover:bg-slate-50 transition-colors"
+                        th:with="roomStatus=${r.status}">
+                        <td class="py-3 px-3" th:text="${r.number}"></td>
+                        <td class="py-3 px-4" th:text="${r.currentStay != null ? #temporals.format(r.currentStay.checkIn, 'dd/MM') : '-'}"></td>
+                        <td class="py-3 px-4" th:text="${r.currentStay != null ? #temporals.format(r.checkOutPrediction, 'dd/MM') : '-'}"></td>
+                        <td class="py-3 px-4 flex items-center">
+                            <span th:text="${r.currentStay != null ? r.currentStay.stayAmount : '-'}"></span>
+                            <a th:if="${r.status == roomStatus.OCCUPIED}"
+                               th:href="@{/stays/add-stay-amount/1(roomId=${r.id})}"
+                               class="ml-2 bg-indigo-50 text-indigo-200 rounded-full text-center w-8 h-8 flex items-center justify-center font-bold text-lg hover:bg-indigo-200 hover:text-indigo-500 transition">+1</a>
+                        </td>
+                        <td class="py-3 px-4 font-bold"
+                            th:text="${r.status == roomStatus.AVAILABLE ? 'Disponível' : r.status == roomStatus.OCCUPIED ? 'Ocupado' : 'Manutenção'}"
+                            th:classappend="${r.status == roomStatus.AVAILABLE ? 'text-emerald-600' : r.status == roomStatus.OCCUPIED ? 'text-red-600' : 'text-amber-600'}"></td>
+                        <td class="py-3 px-4" th:text="${r.currentStay != null ? r.currentStay.client.firstName : '-'}"></td>
+                        <td class="py-3 px-4" th:text="${r.currentStay != null ? r.currentStay.stayPrice : '-'}"></td>
+                        <td class="flex flex-col sm:flex-row items-start sm:items-center justify-center gap-2 py-4">
+                            <a th:if="${r.status == roomStatus.AVAILABLE}"
+                               th:href="@{/stays/new(roomId=${r.id})}"
+                               class="bg-indigo-600 text-white rounded-xl px-4 py-2 hover:bg-indigo-700 transition font-semibold w-full text-center">Check-in</a>
 
-                        <a th:if="${r.status == roomStatus.AVAILABLE}"
-                           th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
-                           class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
-                        >Manutenção</a>
-                        <a th:if="${r.status == roomStatus.MAINTENANCE}"
-                           th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
-                           class="bg-sky-800 text-white rounded-lg px-2 py-1 hover:bg-sky-900 transition"
-                        >Habilitar Apto</a>
-                    </td>
-                </tr>
-                </tbody>
+                            <a th:if="${r.status == roomStatus.OCCUPIED}"
+                               th:href="@{/clients/new}"
+                               class="bg-red-600 text-white rounded-xl px-4 py-2 hover:bg-red-700 transition font-semibold w-full text-center">Check-out</a>
 
-            </table>
+                            <a th:if="${r.status == roomStatus.AVAILABLE}"
+                               th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
+                               class="bg-amber-300 text-white rounded-xl px-4 py-2 hover:bg-amber-400 transition font-semibold w-full text-center">Manutenção</a>
+
+                            <a th:if="${r.status == roomStatus.MAINTENANCE}"
+                               th:href="@{/rooms/set-maintenance/{id}(id=${r.id})}"
+                               class="bg-emerald-300 text-white rounded-xl px-4 py-2 hover:bg-emerald-400 transition font-semibold w-full text-center">Habilitar</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 </div>
 
-<!-- Rodapé -->
-<footer class="w-full text-center p-8 py-2 bg-gray-800 flex flex-col items-center justify-center">
-    <div class="flex">
+<footer class="w-full text-center p-6 bg-slate-800 flex flex-col items-center justify-center">
+    <div class="flex items-center space-x-4 mb-2">
         <h4 class="text-white font-semibold text-lg">Nos siga nas redes sociais</h4>
         <a href="https://www.google.com" target="_blank" rel="noopener noreferrer"
-           class="text-white font-semibold ml-2 px-4 py-1 bg-gradient-to-bl from-rose-950 via-red-800 to-blue-900 rounded hover:bg-pink-700 transition">
-            Instagram</a>
+           class="text-white font-semibold px-6 py-2 bg-gradient-to-tr from-purple-500 via-pink-500 to-yellow-500 rounded-full hover:shadow-lg transition-transform transform hover:scale-105">
+            Instagram
+        </a>
     </div>
-    <h5 class="p-2 text-gray-200 font-semi-bold">CNPJ: 88.727.599/0001-00</h5>
+    <h5 class="p-2 text-slate-400 font-normal text-sm">CNPJ: 88.727.599/0001-00</h5>
 </footer>
 
 </body>

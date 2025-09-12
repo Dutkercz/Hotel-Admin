@@ -38,7 +38,7 @@ public class ClientService {
     }
 
     public Page<Client> findAllClients(Pageable pageable) {
-        return clientRepository.findAll(pageable);
+        return clientRepository.findAllByStatus(ACTIVE, pageable);
     }
 
     public Client findByCpf(String cpf) {
@@ -70,10 +70,6 @@ public class ClientService {
         var client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente de ID +" + id + " não encontrado"));
         clientRepository.inactiveClient(client.getId(), ClientStatusEnum.INACTIVE);
-    }
-
-    public List<Client> findAllActive() {
-        return clientRepository.findAllByStatus(ACTIVE);
     }
 
 }
