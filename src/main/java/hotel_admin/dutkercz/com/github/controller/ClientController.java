@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class ClientController {
 
     //salva a cliente preenchida no formulario
     @PostMapping("/save")
-    public String saveClient(@ModelAttribute("client") Client client){
+    public String saveClient(@ModelAttribute("client") Client client, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("success", "Cliente cadastrado com sucesso.");
         clientService.saveClient(client);
         return "redirect:/clients/list";
     }
@@ -71,9 +73,10 @@ public class ClientController {
     }
 
     @PostMapping("/update/{id}")
-    public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate){
+    public String clientUpdate(@PathVariable Long id, @Valid @ModelAttribute ClientUpdate clientUpdate, RedirectAttributes redirectAttributes){
         clientService.updateClient(id, clientUpdate);
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("success" ,"Cliente atualizado com sucesso");
+        return "redirect:/clients/list";
     }
 
     @DeleteMapping("/delete/{id}")

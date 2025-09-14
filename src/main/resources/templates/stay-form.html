@@ -5,16 +5,13 @@
     <title>Hospedar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8">
+<body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8 font-sans">
 
 <div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-5xl">
 
     <div class="flex items-center justify-between mb-8">
-        <a class="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105" th:href="@{/}">Página inicial</a>
+        <a class="bg-sky-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-sky-800 transition-all transform hover:scale-105" th:href="@{/}">Página inicial</a>
     </div>
 
     <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-800 text-center mb-10 drop-shadow-sm">Serviço de Hospedagem</h1>
@@ -22,8 +19,8 @@
     <div class="bg-slate-100 rounded-2xl shadow-inner p-8 w-full max-w-md mx-auto mb-8">
         <h2 class="block text-slate-700 font-bold text-xl mb-3">Pesquisar Cliente por CPF</h2>
         <div class="flex flex-col sm:flex-row gap-4">
-            <input type="text" id="cpf" name="cpf" placeholder="somente números"
-                   class="flex-1 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors">
+            <input type="text" id="cpf" name="cpf" autocomplete="off" placeholder="Digite o CPF (somente números)"
+                   class="flex-1 border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm text-slate-800 transition-colors">
 
             <input type="hidden" id="roomId" th:value="${stay.room.id}" />
 
@@ -31,7 +28,7 @@
                     onclick="window.location.href='/stays/checkin/find-client/'
                       + document.getElementById('cpf').value
                       + '?roomId=' + document.getElementById('roomId').value"
-                    class="w-full sm:w-auto bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105">
+                    class="w-full sm:w-auto bg-sky-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-sky-800 transition-all transform hover:scale-105">
                 Buscar
             </button>
         </div>
@@ -55,8 +52,8 @@
                 </p>
 
                 <p th:if="${stay.room.singleBed != '0'}"
-                class="text-base font-semibold text-slate-700">
-                Cama de Solteiro: <span th:text="*{room.singleBed}"></span>
+                   class="text-base font-semibold text-slate-700">
+                    Cama de Solteiro: <span th:text="*{room.singleBed}"></span>
                 </p>
 
                 <p class="text-base font-semibold text-slate-700">
@@ -101,7 +98,7 @@
 
                 <div class="mt-4 text-center">
                     <button type="submit"
-                            class="w-full bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-emerald-700 transition-all transform hover:scale-105">
+                            class="w-full bg-sky-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-sky-800 transition-all transform hover:scale-105">
                         Confirmar Check-in
                     </button>
                 </div>
@@ -122,7 +119,7 @@
             input.type = 'text';
             input.name = `guests[${i}].name`;
             input.placeholder = `Nome da pessoa ${i+1}`;
-            input.className = 'w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm text-slate-800 transition-colors';
+            input.className = 'w-full bg-white border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 shadow-sm text-slate-800 transition-colors';
             container.appendChild(input);
         }
     });

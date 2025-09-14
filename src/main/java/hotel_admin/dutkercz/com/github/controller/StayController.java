@@ -80,9 +80,9 @@ public class StayController {
         return "stay-form";
     }
 
-    @GetMapping("/add-stay-amount/{amount}")
-    public String addStayAmount(@PathVariable("amount") Integer amount, @RequestParam Long roomId){
-        stayService.addStay(amount, roomId);
+    @GetMapping("/add-stay-amount")
+    public String addStayAmount(@RequestParam Long roomId){
+        stayService.addStay(1, roomId);
         return "redirect:/";
     }
 
