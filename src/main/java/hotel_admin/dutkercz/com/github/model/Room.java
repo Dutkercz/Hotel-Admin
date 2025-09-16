@@ -29,6 +29,9 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Stay> stays = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Maintenance> maintenances = new ArrayList<>();
+
     public Room() {
     }
 
@@ -89,6 +92,25 @@ public class Room {
         stays.add(stay);
         stay.setRoom(this);
     }
+
+    public List<Maintenance> getMaintenances() {
+        return maintenances;
+    }
+
+    public void setMaintenances(List<Maintenance> maintenances) {
+        this.maintenances = maintenances;
+    }
+
+    public void removeMaintenance(Maintenance maintenance){
+        maintenances.remove(maintenance);
+        maintenance.setRoom(null);
+    }
+
+    public void addMaintenance(Maintenance maintenance){
+        maintenances.add(maintenance);
+        maintenance.setRoom(this);
+    }
+
 
     //Evitar que a JPA tente mapear esse "CurrentStay" como uma coluna em Room no banco.
     // Serve só para usar no thymeleaf pra capturar o nome do hospede atual.

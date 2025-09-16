@@ -8,18 +8,15 @@ import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import hotel_admin.dutkercz.com.github.service.ClientService;
 import hotel_admin.dutkercz.com.github.service.RoomService;
 import hotel_admin.dutkercz.com.github.service.StayService;
+import hotel_admin.dutkercz.com.github.service.utils.GetActualDay;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.websocket.server.PathParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,11 +108,7 @@ public class StayController {
         Map<String, Map<Long, String>> statusMap = new HashMap<>();
 
         // calcula o "hoje" respeitando a regra das diárias
-        LocalDateTime now = LocalDateTime.now();
-        LocalDate todayDate = now.toLocalTime().isBefore(LocalTime.NOON) ?
-                LocalDate.now().minusDays(1)
-                :
-                LocalDate.now();
+        LocalDate todayDate = GetActualDay.verifyLocalDate(LocalDateTime.now());
 
         int today = todayDate.getDayOfMonth();
         model.addAttribute("today", today);
