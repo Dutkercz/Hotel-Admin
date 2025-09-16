@@ -1,12 +1,47 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Document</title>
+    <title>Check-Out</title>
 </head>
-<body>
+<body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8">
 
+<div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-5xl">
+
+    <h1 class="text-3xl font-bold text-slate-800 mb-6 text-center">Página de checkout</h1>
+
+    <div class="mb-6" >
+        <p class="font-semibold text-xl">Nome do Hospede: <span th:text="*{client.firstName + ' ' + client.lastName}"></span></p>
+        <p class="font-semibold text-xl">Apartamento n°: <span th:text="*{room.number}"></span></p>
+        <p class="font-semibold text-xl">Total de diárias <span th:text="${stay.stayAmount}"></span></p>
+    </div>
+    <div class="mb-6">
+        <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Adicionar extras</h2>
+
+        <div class="flex justify-between mb-3">
+            <span class="font-semibold text-lg">Agua R$ 4,00</span>
+            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="agua">
+        </div>
+
+        <div class="flex justify-between mb-3">
+            <span class="font-semibold text-lg">Refrigerante R$ 5,00</span>
+            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="refri">
+        </div>
+
+        <div class="flex justify-between mb-3">
+            <span class="font-semibold text-lg">Café extra R$ 20,00</span>
+            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="cafe ">
+        </div>
+
+
+    </div>
+
+
+
+
+
+</div>
 </body>
 </html>

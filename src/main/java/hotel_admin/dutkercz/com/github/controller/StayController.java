@@ -16,10 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
@@ -111,13 +110,24 @@ public class StayController {
         List<Stay> stays = stayService.findByActualMont(actualMonth);
         Map<String, Map<Long, String>> statusMap = new HashMap<>();
 
+        // calcula o "hoje" respeitando a regra das diárias
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate todayDate = now.toLocalTime().isBefore(LocalTime.NOON) ?
+                LocalDate.now().minusDays(1)
+                :
+                LocalDate.now();
+
+        int today = todayDate.getDayOfMonth();
+        model.addAttribute("today", today);
+
         for (Integer referenceDay : days){
             Map<Long, String> dayMap = new HashMap<>();
             for (Room r : rooms){
                 var status = "AVAILABLE";
 
+                //considera que o dia começa ao meio 12:01, assim como as diárias
                 LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
-                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && !actualDayOfMonth.isBefore(LocalDateTime.now())){
+                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && !actualDayOfMonth.isBefore(todayDate.atStartOfDay())){
                     status = "MAINTENANCE";
                 }else {
                     for (Stay s : stays){
@@ -135,15 +145,11 @@ public class StayController {
         String actualMonthFormatted = actualMonth.getMonthValue() < 10 ? "0" + actualMonth.getMonthValue() : String.valueOf(actualMonth.getMonthValue());
         var actualYear = actualMonth.getYear();
 
-        System.out.println("Monthvalue" + actualMonth.getMonthValue());
-        System.out.println("formatted" + actualMonthFormatted);
-
         model.addAttribute("actualMonth", actualMonthFormatted);
         model.addAttribute("actualYear", actualYear);
         model.addAttribute("days", days);
         model.addAttribute("rooms", rooms);
         model.addAttribute("statusMap", statusMap);
-        model.addAttribute("today", LocalDate.now().getDayOfMonth());
         return "monthly-grid";
     }
 
