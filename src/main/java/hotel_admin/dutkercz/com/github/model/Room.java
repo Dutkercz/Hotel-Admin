@@ -5,7 +5,6 @@ import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Stay> stays = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Maintenance> maintenances = new ArrayList<>();
 
     public Room() {

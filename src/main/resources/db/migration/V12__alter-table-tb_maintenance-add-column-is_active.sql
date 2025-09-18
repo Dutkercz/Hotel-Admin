@@ -1,0 +1,2 @@
+ALTER TABLE tb_maintenance
+ADD COLUMN is_active TINYINT NOT NULL;

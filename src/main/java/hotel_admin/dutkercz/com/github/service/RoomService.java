@@ -23,7 +23,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> findAll(){
+    public List<Room>   findAll(){
         return roomRepository.findAllWithActiveStaysOrEmpty(StayStatusEnum.ACTIVE);
     }
 
@@ -33,11 +33,13 @@ public class RoomService {
                 .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
         if (room.getStatus().equals(RoomStatusEnum.MAINTENANCE)){
             room.getMaintenances().getLast().setEndMaintenance(GetActualDay.verifyLocalDateTime(LocalDateTime.now()));
+            room.getMaintenances().getLast().setActive(false);
             room.setStatus(RoomStatusEnum.AVAILABLE);
         }else {
             room.setStatus(RoomStatusEnum.MAINTENANCE);
             Maintenance maintenance = new Maintenance();
             maintenance.setStartMaintenance(GetActualDay.verifyLocalDateTime(LocalDateTime.now()));
+            maintenance.setActive(true);
             room.addMaintenance(maintenance);
         }
     }

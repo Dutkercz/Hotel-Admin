@@ -13,6 +13,7 @@ public class Maintenance {
     private Long id;
     private LocalDateTime startMaintenance;
     private LocalDateTime endMaintenance;
+    private Boolean isActive;
 
     @ManyToOne
     private Room room;
@@ -20,10 +21,11 @@ public class Maintenance {
     public Maintenance() {
     }
 
-    public Maintenance(Long id, LocalDateTime startMaintenance, LocalDateTime endMaintenance, Room room) {
+    public Maintenance(Long id, LocalDateTime startMaintenance, LocalDateTime endMaintenance, Boolean isActive, Room room) {
         this.id = id;
         this.startMaintenance = startMaintenance;
         this.endMaintenance = endMaintenance;
+        this.isActive = isActive;
         this.room = room;
     }
 
@@ -57,5 +59,13 @@ public class Maintenance {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }
