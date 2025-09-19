@@ -13,35 +13,77 @@
     <h1 class="text-3xl font-bold text-slate-800 mb-6 text-center">Página de checkout</h1>
 
     <div class="mb-6" >
-        <p class="font-semibold text-xl">Nome do Hospede: <span th:text="*{client.firstName + ' ' + client.lastName}"></span></p>
-        <p class="font-semibold text-xl">Apartamento n°: <span th:text="*{room.number}"></span></p>
+        <p class="font-semibold text-xl">Nome do Hospede: <span th:text="${stay.client.firstName} + ' ' + ${stay.client.lastName}"></span></p>
+        <p class="font-semibold text-xl">Apartamento n°: <span th:text="${stay.room.number}"></span></p>
         <p class="font-semibold text-xl">Total de diárias <span th:text="${stay.stayAmount}"></span></p>
     </div>
     <div class="mb-6">
         <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Adicionar extras</h2>
 
-        <div class="flex justify-between mb-3">
-            <span class="font-semibold text-lg">Agua R$ 4,00</span>
-            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="agua">
+        <div class="flex flex-col gap-4">
+
+            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                <span class="font-semibold text-lg">Água <span class="text-sky-600">R$ 4,00</span></span>
+                <div class="flex items-center gap-2">
+                    <input type="number" min="0" value="0"
+                           class="w-16 border rounded-lg px-2 py-1 text-center"
+                           id="agua">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                <span class="font-semibold text-lg">Refrigerante <span class="text-sky-600">R$ 5,00</span></span>
+                <div class="flex items-center gap-2">
+                    <input type="number" min="0" value="0"
+                           class="w-16 border rounded-lg px-2 py-1 text-center"
+                           id="refri">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                <span class="font-semibold text-lg">Café extra <span class="text-sky-600">R$ 20,00</span></span>
+                <div class="flex items-center gap-2">
+                    <input type="number" min="0" value="0"
+                           class="w-16 border rounded-lg px-2 py-1 text-center"
+                           id="cafe">
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center bg-sky-100 p-4 rounded-xl shadow-md mt-4">
+                <span class="font-bold text-xl">Total:</span>
+                <span id="total" class="font-bold text-xl text-sky-700">R$ 0,00</span>
+            </div>
+
         </div>
-
-        <div class="flex justify-between mb-3">
-            <span class="font-semibold text-lg">Refrigerante R$ 5,00</span>
-            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="refri">
-        </div>
-
-        <div class="flex justify-between mb-3">
-            <span class="font-semibold text-lg">Café extra R$ 20,00</span>
-            <input type="number" min="0" value="0" class="w-16 border rounded-lg px-2 py-1 text-center" id="cafe ">
-        </div>
-
-
     </div>
-
-
-
-
-
 </div>
+<script>
+    const prices = {
+        agua: 4.00,
+        refri: 5.00,
+        cafe: 20.00
+    };
+
+    const inputs = document.querySelectorAll("#agua, #refri, #cafe");
+    const totalEl = document.getElementById("total");
+
+    function updateTotal() {
+        let total = 0;
+        inputs.forEach(input => {
+            const qtd = parseInt(input.value) || 0;
+            total += qtd * prices[input.id];
+        });
+        totalEl.textContent = "R$ " + total.toFixed(2).replace(".", ",");
+    }
+
+    // Atualiza sempre que mudar a quantidade
+    inputs.forEach(input => {
+        input.addEventListener("input", updateTotal);
+    });
+
+    // Inicializa o total
+    updateTotal();
+
+</script>
 </body>
 </html>

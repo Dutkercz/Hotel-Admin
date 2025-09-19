@@ -166,7 +166,8 @@ public class StayController {
 
     @GetMapping("/checkout")
     public String checkOut(@RequestParam Long roomId, Model model){
-        model.addAttribute("stay", stayService.findByRoomId(roomId));
+        Stay stay = stayService.findByRoomId(roomId);
+        model.addAttribute("stay", stay );
         return "stay-checkout";
     }
 }
