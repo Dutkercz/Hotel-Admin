@@ -5,6 +5,7 @@ import hotel_admin.dutkercz.com.github.repository.MaintenanceRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 @Service
@@ -16,7 +17,9 @@ public class MaintenanceService {
         this.maintenanceRepository = maintenanceRepository;
     }
 
-    public List<Maintenance> findByDate(LocalDateTime todayDate) {
-        return maintenanceRepository.findAllByStartMaintenanceBetween(todayDate, todayDate.plusDays(1));
+    public List<Maintenance> findAllMonthMaintenance() {
+        LocalDateTime startOfMonth = YearMonth.now().atDay(1).atTime(12, 0);
+        LocalDateTime endOfMonth = YearMonth.now().atEndOfMonth().atTime(11, 59);
+        return maintenanceRepository.findAllByStartMaintenanceBetween(startOfMonth, endOfMonth);
     }
 }

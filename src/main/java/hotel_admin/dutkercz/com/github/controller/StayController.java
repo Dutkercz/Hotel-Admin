@@ -2,10 +2,12 @@ package hotel_admin.dutkercz.com.github.controller;
 
 import hotel_admin.dutkercz.com.github.exceptions.RoomConflictException;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.Maintenance;
 import hotel_admin.dutkercz.com.github.model.Room;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import hotel_admin.dutkercz.com.github.service.ClientService;
+import hotel_admin.dutkercz.com.github.service.MaintenanceService;
 import hotel_admin.dutkercz.com.github.service.RoomService;
 import hotel_admin.dutkercz.com.github.service.StayService;
 import hotel_admin.dutkercz.com.github.service.utils.GetActualDay;
@@ -32,11 +34,13 @@ public class StayController {
     private final StayService stayService;
     private final RoomService roomService;
     private final ClientService clientService;
+    private final MaintenanceService maintenanceService;
 
-    public StayController(StayService stayService, RoomService roomService, ClientService clientService) {
+    public StayController(StayService stayService, RoomService roomService, ClientService clientService, MaintenanceService maintenanceService) {
         this.stayService = stayService;
         this.roomService = roomService;
         this.clientService = clientService;
+        this.maintenanceService = maintenanceService;
     }
 
     @GetMapping("/new")
@@ -107,6 +111,7 @@ public class StayController {
 
         List<Room> rooms = roomService.findAll();
         List<Stay> stays = stayService.findByActualMont(actualMonth);
+        List<Maintenance> maintenances = maintenanceService.findAllMonthMaintenance();
         Map<String, Map<Long, String>> statusMap = new HashMap<>();
 
         // calcula o "hoje" respeitando a regra das diárias
@@ -117,21 +122,32 @@ public class StayController {
 
         for (Integer referenceDay : days){
             Map<Long, String> dayMap = new HashMap<>();
+            LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
+
             for (Room r : rooms){
                 var status = "AVAILABLE";
 
-                //considera que o dia começa ao meio 12:01, assim como as diárias
-                LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
-                if (r.getStatus() == RoomStatusEnum.MAINTENANCE && !actualDayOfMonth.isBefore(todayDate.atStartOfDay())){
-                    status = "MAINTENANCE";
-                }else {
+                for (Maintenance m : maintenances) {
+                    if (m.getRoom().getId().equals(r.getId())
+                            && !actualDayOfMonth.isBefore(m.getStartMaintenance()) //só vale se o dia for igual ou depois do dia atual que estamos olhando
+                            && (m.getEndMaintenance() == null || !actualDayOfMonth.isAfter(m.getEndMaintenance()))
+//ja aqui vamos ver se ainda está em manutenção  /\  e incluir até o final do mes, ou se ja foi finalizada que só vai valer até dia que for igual ou antes do dia atual
+                    ) {
+                        status = "MAINTENANCE";
+                        break;
+                    }
+                }
+                if(status.equals("AVAILABLE")){
                     for (Stay s : stays){
-                        if (s.getRoom().getId().equals(r.getId()) && !actualDayOfMonth.isBefore(s.getCheckIn()) && !actualDayOfMonth.isAfter(s.getCheckOut())) {
+                        if (s.getRoom().getId().equals(r.getId())
+                                && !actualDayOfMonth.isBefore(s.getCheckIn())
+                                && !actualDayOfMonth.isAfter(s.getCheckOut())) {
                             status = "OCCUPIED";
                             break;
                         }
                     }
                 }
+
                 dayMap.put(r.getId(), status);
             }
             statusMap.put(referenceDay.toString(), dayMap);

@@ -10,4 +10,6 @@ public interface MaintenanceRepository extends JpaRepository<Maintenance, Long> 
     boolean existsByStartMaintenanceBetween(LocalDateTime todayDate, LocalDateTime now);
 
     List<Maintenance> findAllByStartMaintenanceBetween(LocalDateTime todayDate, LocalDateTime localDateTime);
+
+    List<Maintenance> findAllByIsActiveTrue();
 }
