@@ -1,6 +1,8 @@
 package hotel_admin.dutkercz.com.github.service;
 
+import hotel_admin.dutkercz.com.github.exceptions.RoomConflictException;
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.Maintenance;
 import hotel_admin.dutkercz.com.github.model.Room;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
@@ -8,16 +10,19 @@ import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import hotel_admin.dutkercz.com.github.repository.StayRepository;
+import hotel_admin.dutkercz.com.github.service.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StayService {
@@ -25,12 +30,14 @@ public class StayService {
     private final StayRepository stayRepository;
     private final RoomService roomService;
     private final ClientService clientService;
+    private final MaintenanceService maintenanceService;
 
 
-    public StayService(StayRepository stayRepository, RoomRepository roomRepository, ClientRepository clientRepository, RoomService roomService, ClientService clientService) {
+    public StayService(StayRepository stayRepository, RoomRepository roomRepository, ClientRepository clientRepository, RoomService roomService, ClientService clientService, MaintenanceService maintenanceService) {
         this.stayRepository = stayRepository;
         this.roomService = roomService;
         this.clientService = clientService;
+        this.maintenanceService = maintenanceService;
     }
 
 
@@ -86,5 +93,64 @@ public class StayService {
                 .orElseThrow(() -> new EntityNotFoundException("Diária não encontrada"));
         if (stay.getStatus().equals(StayStatusEnum.ACTIVE)) return stay;
         return null;
+    }
+
+    public Room newStaySetRoom(Long roomId) {
+        Room room = roomService.findById(roomId);
+        if (room.getStatus().equals(RoomStatusEnum.OCCUPIED) || room.getStatus().equals(RoomStatusEnum.MAINTENANCE)){
+            throw new RoomConflictException("Está acomodação não está disponível para checkin");
+        }
+        return room;
+    }
+
+    public Client newStaySetClient(@NotBlank String cpf) {
+        Client client = clientService.findByCpf(cpf.replaceAll("[,.-]", ""));
+        if (client == null){
+            throw new EntityNotFoundException("Cliente não encontrado");
+        }
+        return client;
+    }
+
+    public Map<String, Map<Long, String>> createStatusRoomMap() {
+        YearMonth actualMonth = YearMonth.now();
+        List<Integer> days = DateUtils.getDaysOfMonth();
+
+        List<Room> rooms = roomService.findAll();
+        List<Stay> stays = stayRepository.findAllByCheckInBetween(actualMonth.atDay(1).atStartOfDay(), actualMonth.atEndOfMonth().atTime(12, 0, 0));;
+        List<Maintenance> maintenances = maintenanceService.findAllMonthMaintenance();
+        Map<String, Map<Long, String>> statusMap = new HashMap<>();
+
+        for (Integer referenceDay : days) {
+            Map<Long, String> dayMap = new HashMap<>();
+            LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
+
+            for (Room r : rooms) {
+                var status = "AVAILABLE";
+
+                for (Maintenance m : maintenances) {
+                    if (m.getRoom().getId().equals(r.getId())
+                            && !actualDayOfMonth.isBefore(m.getStartMaintenance()) //só vale se o dia for igual ou depois do dia atual que estamos olhando
+                            && (m.getEndMaintenance() == null || !actualDayOfMonth.isAfter(m.getEndMaintenance()))
+                    ) {
+                        status = "MAINTENANCE";
+                        break;
+                    }
+                }
+                if (status.equals("AVAILABLE")) {
+                    for (Stay s : stays) {
+                        if (s.getRoom().getId().equals(r.getId())
+                                && !actualDayOfMonth.isBefore(s.getCheckIn())
+                                && !actualDayOfMonth.isAfter(s.getCheckOut())) {
+                            status = "OCCUPIED";
+                            break;
+                        }
+                    }
+                }
+
+                dayMap.put(r.getId(), status);
+            }
+            statusMap.put(referenceDay.toString(), dayMap);
+        }
+        return statusMap;
     }
 }

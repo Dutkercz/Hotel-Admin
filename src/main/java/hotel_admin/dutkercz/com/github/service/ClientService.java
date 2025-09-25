@@ -72,4 +72,7 @@ public class ClientService {
         clientRepository.inactiveClient(client.getId(), ClientStatusEnum.INACTIVE);
     }
 
+    public List<Stay> findAllStaysByCpf(String cpf) {
+        return clientRepository.findAllStaysByCpf(cpf.replaceAll("[.,-]", ""));
+    }
 }

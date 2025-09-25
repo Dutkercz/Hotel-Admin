@@ -8,6 +8,7 @@ import hotel_admin.dutkercz.com.github.service.ClientService;
 import hotel_admin.dutkercz.com.github.service.StayService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -83,5 +84,21 @@ public class ClientController {
     public ResponseEntity<?> clientDelete(@PathVariable Long id){
         clientService.deleteClient(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/client-history")
+    public String listClientStaysPage(Model model){
+        model.addAttribute("clientStays", List.of());
+        return "client-stay_history";
+    }
+
+    @GetMapping("/client-history/{cpf}")
+    public String listClientStays(@PathVariable("cpf") @NotBlank(message = "Digite um cpf válido")
+                                  @Pattern(regexp = "\\d{11}", message = "CPF fora do padrão de 11 dígitos")
+                                  String cpf,
+                                  Model model){
+        model.addAttribute("client", clientService.findByCpf(cpf));
+        model.addAttribute("clientStays", clientService.findAllStaysByCpf(cpf));
+        return "client-stay_history";
     }
 }

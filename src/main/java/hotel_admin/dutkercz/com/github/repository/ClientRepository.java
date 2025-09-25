@@ -1,6 +1,7 @@
 package hotel_admin.dutkercz.com.github.repository;
 
 import hotel_admin.dutkercz.com.github.model.Client;
+import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.ClientStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,11 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
     Page<Client> findAllByStatus(ClientStatusEnum active, Pageable pageable);
 
     Optional<Client> findByCpf(String replaced);
+
+    @Query("""
+    SELECT s FROM Stay s
+    JOIN s.client c
+    WHERE c.cpf = :cpf
+    """)
+    List<Stay> findAllStaysByCpf(@Param("cpf") String cpf);
 }
