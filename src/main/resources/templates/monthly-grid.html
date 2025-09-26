@@ -18,6 +18,10 @@
         <h1 class="text-slate-800 font-extrabold mb-6 text-5xl drop-shadow-sm">
             Tabela de Ocupação
         </h1>
+        <a th:href="@{/stays/monthly-grid?(filtro=${filtro == 'hoje' ? '' : 'hoje'})}"
+           class="bg-sky-600 text-white px-6 py-2 rounded-xl shadow-md hover:bg-sky-700 transition-all font-semibold transform hover:scale-105">
+            <span th:text="${filtro == 'hoje' ? 'Mostrar todos os dias' : 'Mostrar a partir de hoje'}"></span>
+        </a>
     </div>
 
     <div class="overflow-x-auto rounded-3xl shadow-xl border border-slate-200">

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Validated
@@ -70,7 +71,7 @@ public class StayController {
     }
 
     @GetMapping("/monthly-grid")
-    public String monthlyGrid(Model model){
+    public String monthlyGrid(@RequestParam(name = "filtro", required = false) String filtro, Model model){
         Map<String, Map<Long, String>> statusMap = stayService.createStatusRoomMap();
         String actualMonthFormatted = DateUtils.formatMonth();
 
@@ -78,6 +79,10 @@ public class StayController {
 
         int today = DateUtils.defineActualLocalDate(LocalDateTime.now()).getDayOfMonth();
         List<Integer> days = DateUtils.getDaysOfMonth();
+        if ("hoje".equals(filtro)) {
+            days = days.stream().filter(d -> d >= today).collect(Collectors.toList());
+        }
+        model.addAttribute("filtro", filtro);
         model.addAttribute("today", today);
 
         model.addAttribute("actualMonth", actualMonthFormatted);
