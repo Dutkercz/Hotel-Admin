@@ -6,7 +6,6 @@ import hotel_admin.dutkercz.com.github.model.Maintenance;
 import hotel_admin.dutkercz.com.github.model.Room;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
-import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import hotel_admin.dutkercz.com.github.repository.StayRepository;
@@ -17,12 +16,13 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum.ACTIVE;
 
 @Service
 public class StayService {
@@ -47,7 +47,7 @@ public class StayService {
         Client client = clientService.findByid(stay.getClient().getId());
 
         room.setStatus(RoomStatusEnum.OCCUPIED);
-        stay.setStatus(StayStatusEnum.ACTIVE);
+        stay.setStatus(ACTIVE);
         stay.setStayPrice(calculateStayPrice(stay));
         stay.setCheckIn(LocalDateTime.now());
         stay.setCheckOut(stay.getCheckIn(), stay.getStayAmount());
@@ -88,11 +88,9 @@ public class StayService {
         return stayRepository.findAllByCheckInBetween(actualMonth.atDay(1).atStartOfDay(), actualMonth.atEndOfMonth().atTime(12, 0, 0));
     }
 
-    public Stay findByRoomId(Long roomId) {
-        Stay stay = stayRepository.findByRoomId(roomId)
+    public Stay findByRoomIdAndActive(Long roomId) {
+        return stayRepository.findByRoomIdAndStatus(roomId, ACTIVE)
                 .orElseThrow(() -> new EntityNotFoundException("Diária não encontrada"));
-        if (stay.getStatus().equals(StayStatusEnum.ACTIVE)) return stay;
-        return null;
     }
 
     public Room newStaySetRoom(Long roomId) {

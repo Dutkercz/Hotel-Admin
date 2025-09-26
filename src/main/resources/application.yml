@@ -3,10 +3,5 @@ spring:
     name: Hotel-Admin
   jpa:
     open-in-view: false
-  datasource:
-    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE}?useTimezone=true&serverTimezone=UTC
-    username: ${MY_SQL_USERNAME}
-    password: ${MY_SQL_PASSWORD}
-server:
-  address: 127.0.0.1
-  port: 8080
+  profiles:
+    active: dev

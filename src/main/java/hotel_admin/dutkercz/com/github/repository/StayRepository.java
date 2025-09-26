@@ -1,9 +1,9 @@
 package hotel_admin.dutkercz.com.github.repository;
 
 import hotel_admin.dutkercz.com.github.model.Stay;
+import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +15,5 @@ public interface StayRepository extends JpaRepository<Stay, Long> {
 
     List<Stay> findAllByCheckInBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    Optional<Stay> findByRoomId(Long roomId);
+    Optional<Stay> findByRoomIdAndStatus(Long roomId, StayStatusEnum status);
 }

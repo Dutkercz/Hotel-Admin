@@ -1,13 +1,10 @@
 package hotel_admin.dutkercz.com.github.controller;
 
 import hotel_admin.dutkercz.com.github.model.Stay;
-import hotel_admin.dutkercz.com.github.service.ClientService;
-import hotel_admin.dutkercz.com.github.service.MaintenanceService;
 import hotel_admin.dutkercz.com.github.service.RoomService;
 import hotel_admin.dutkercz.com.github.service.StayService;
 import hotel_admin.dutkercz.com.github.service.utils.DateUtils;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -95,7 +92,7 @@ public class StayController {
 
     @GetMapping("/checkout")
     public String checkOut(@RequestParam Long roomId, Model model){
-        Stay stay = stayService.findByRoomId(roomId);
+        Stay stay = stayService.findByRoomIdAndActive(roomId);
         model.addAttribute("stay", stay );
         return "stay-checkout";
     }
