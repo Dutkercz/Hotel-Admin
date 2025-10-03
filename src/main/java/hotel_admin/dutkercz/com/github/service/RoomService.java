@@ -22,8 +22,8 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room>   findAll(){
-        return roomRepository.findAllWithActiveStaysOrEmpty(StayStatusEnum.ACTIVE);
+    public List<Room>findAll(){
+        return roomRepository.findAll();
     }
 
     @Transactional
@@ -46,5 +46,10 @@ public class RoomService {
     public Room findById(Long roomId) {
         return roomRepository.findById(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
+    }
+
+    @Transactional
+    public void checkOutRoom(Room room) {
+        room.setStatus(RoomStatusEnum.AVAILABLE);
     }
 }

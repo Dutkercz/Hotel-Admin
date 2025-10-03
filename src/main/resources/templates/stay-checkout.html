@@ -9,7 +9,7 @@
 <body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8">
 
 <div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-5xl">
-    <form th:action="@{stays/checkout/save/${stay.id}" th:object="${extras}" th:method="post" class="space-y-1">
+    <form th:action="@{/stays/checkout/save/{stayId}(stayId=${stay.id})}" th:object="${extras}" th:method="post" class="space-y-1">
 
         <h1 class="text-3xl font-bold text-slate-800 mb-6 text-center">Página de checkout</h1>
 
@@ -17,6 +17,8 @@
             <p class="font-semibold text-xl">Nome do Hospede: <span th:text="${stay.client.firstName} + ' ' + ${stay.client.lastName}"></span></p>
             <p class="font-semibold text-xl">Apartamento n°: <span th:text="${stay.room.number}"></span></p>
             <p class="font-semibold text-xl">Total de diárias <span th:text="${stay.stayAmount}"></span></p>
+            <p th:attr="data-total=${stay.stayPrice}" id="totalStay"
+               class="font-semibold text-xl">Sub total <span th:text="${stay.stayPrice}"></span></p>
         </div>
         <div class="mb-6">
             <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Adicionar extras</h2>
@@ -27,7 +29,7 @@
                     <span class="font-semibold text-lg">Água <span class="text-sky-600">R$ 4,00</span></span>
                     <div class="flex items-center gap-2">
                         <input type="number" min="0" value="0"
-                               th:field="${extras.waterExtraPrice}"
+                               th:field="${extras.waterQuantity}"
                                class="w-16 border font-semibold rounded-lg px-2 py-1 text-center"
                                id="water">
                     </div>
@@ -37,7 +39,7 @@
                     <span class="font-semibold text-lg">Refrigerante <span class="text-sky-600">R$ 5,00</span></span>
                     <div class="flex items-center gap-2">
                         <input type="number" min="0" value="0"
-                               th:field="${extras.sodaExtraPrice}"
+                               th:field="${extras.sodaQuantity}"
                                class="w-16 border font-semibold rounded-lg px-2 py-1 text-center"
                                id="soda">
                     </div>
@@ -47,7 +49,7 @@
                     <span class="font-semibold text-lg">Café extra <span class="text-sky-600">R$ 20,00</span></span>
                     <div class="flex items-center gap-2">
                         <input type="number" min="0" value="0"
-                               th:field="${extras.coffeeExtraPrice}"
+                               th:field="${extras.coffeeQuantity}"
                                class="w-16 font-semibold border rounded-lg px-2 py-1 text-center"
                                id="coffee">
                     </div>
@@ -59,11 +61,15 @@
                 </div>
             </div>
         </div>
-        <div class="text-center bg-green-500 py-4">
+
+        <div class="text-center text-white bg-green-500 py-4 mt-6 rounded-xl shadow-md hover:bg-green-600
+        transition-all font-semibold transform hover:scale-105 hover:underline hover:translate-x-2">
             <button type="submit" > Check-out </button>
         </div>
-
     </form>
+
+
+
 </div>
 <script>
     const prices = {
@@ -74,9 +80,10 @@
 
     const inputs = document.querySelectorAll("#water, #soda, #coffee");
     const totalEl = document.getElementById("total");
+    const totalStay = parseFloat(document.getElementById("totalStay").dataset.total);
 
     function updateTotal() {
-        let total = 0;
+        let total = totalStay;
         inputs.forEach(input => {
             const qtd = parseInt(input.value) || 0;
             total += qtd * prices[input.id];
@@ -89,9 +96,7 @@
         input.addEventListener("input", updateTotal);
     });
 
-    // Inicializa o total
     updateTotal();
-
 </script>
 </body>
 </html>

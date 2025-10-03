@@ -3,9 +3,9 @@ package hotel_admin.dutkercz.com.github.service;
 import hotel_admin.dutkercz.com.github.exceptions.RoomConflictException;
 import hotel_admin.dutkercz.com.github.model.*;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
-import hotel_admin.dutkercz.com.github.repository.ClientRepository;
-import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import hotel_admin.dutkercz.com.github.repository.StayRepository;
+import hotel_admin.dutkercz.com.github.service.utils.CalculateStayExtras;
+import hotel_admin.dutkercz.com.github.service.utils.CalculateStayPrice;
 import hotel_admin.dutkercz.com.github.service.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import static hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum.ACTIVE;
+import static hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum.FINISHED;
+import static hotel_admin.dutkercz.com.github.service.utils.CalculateStayPrice.calculateStayPrice;
 
 @Service
 public class StayService {
@@ -28,13 +30,15 @@ public class StayService {
     private final RoomService roomService;
     private final ClientService clientService;
     private final MaintenanceService maintenanceService;
+    private final ExtrasService extrasService;
 
 
-    public StayService(StayRepository stayRepository, RoomRepository roomRepository, ClientRepository clientRepository, RoomService roomService, ClientService clientService, MaintenanceService maintenanceService) {
+    public StayService(StayRepository stayRepository, RoomService roomService, ClientService clientService, MaintenanceService maintenanceService, ExtrasService extrasService) {
         this.stayRepository = stayRepository;
         this.roomService = roomService;
         this.clientService = clientService;
         this.maintenanceService = maintenanceService;
+        this.extrasService = extrasService;
     }
 
 
@@ -53,19 +57,6 @@ public class StayService {
         stayRepository.save(stay);
     }
 
-    private BigDecimal calculateStayPrice(Stay stay) {
-        var countPeople = stay.getGuests().size() + 1;
-
-        if (countPeople == 1){
-            return BigDecimal.valueOf(140.0 * stay.getStayAmount());
-        } else if (countPeople == 2) {
-            return BigDecimal.valueOf(240.0 * stay.getStayAmount());
-        } else if (countPeople == 3) {
-            return BigDecimal.valueOf(350.0 * stay.getStayAmount());
-        }else {
-            return BigDecimal.valueOf(400.0 * stay.getStayAmount());
-        }
-    }
 
     @Transactional
     public void addStay(Integer amount, Long roomId) {
@@ -154,19 +145,19 @@ public class StayService {
         Stay stay = stayRepository.findById(stayId)
                 .orElseThrow(() -> new EntityNotFoundException("Hospedagem não encontrada"));
 
-        BigDecimal total = stay.getStayPrice();
-        total = total.add(extras.getCoffeeExtraPrice())
-                .add(extras.getSodaExtraPrice())
-                .add(extras.getWaterExtraPrice());
 
+        extras.setStay(stay);
+        extrasService.saveExtras(extras);
+        roomService.checkOutRoom(stay.getRoom());
+
+        BigDecimal total = CalculateStayExtras.calculateStayExtras(calculateStayPrice(stay), extras);
         stay.setStayPrice(total);
 
-        System.out.println(total);
-        System.out.println(extras.getCoffeeExtraPrice());
-        System.out.println(extras.getSodaExtraPrice());
-        System.out.println(extras.getWaterExtraPrice());
 
+        stay.setCheckOut(LocalDateTime.now(), stay.getStayAmount());
+        stay.setStatus(FINISHED);
 
         stayRepository.save(stay);
     }
+
 }

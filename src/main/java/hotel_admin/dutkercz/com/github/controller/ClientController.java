@@ -43,7 +43,7 @@ public class ClientController {
     public String saveClient(@ModelAttribute("client") Client client, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("success", "Cliente cadastrado com sucesso.");
         clientService.saveClient(client);
-        return "redirect:/clients/list";
+        return "redirect:/";
     }
 
     //entrega uma lista de clientes

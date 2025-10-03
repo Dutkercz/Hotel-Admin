@@ -3,8 +3,6 @@ package hotel_admin.dutkercz.com.github.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tb_extras")
@@ -14,10 +12,9 @@ public class Extras {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal sodaExtraPrice;
-    private BigDecimal waterExtraPrice;
-    private BigDecimal coffeeExtraPrice;
-    private BigDecimal companionExtraPrice;
+    private Integer sodaQuantity;
+    private Integer waterQuantity;
+    private Integer coffeeQuantity;
 
     @OneToOne
     @JoinColumn(name = "stay_id", nullable = false)
@@ -26,13 +23,12 @@ public class Extras {
     public Extras() {
     }
 
-    public Extras(Long id, BigDecimal sodaExtraPrice, BigDecimal waterExtraPrice,
-                  BigDecimal coffeeExtraPrice, BigDecimal companionExtraPrice, Stay stay) {
+    public Extras(Long id, Integer sodaQuantity, Integer waterQuantity,
+                  Integer coffeeQuantity, Stay stay) {
         this.id = id;
-        this.sodaExtraPrice = sodaExtraPrice;
-        this.waterExtraPrice = waterExtraPrice;
-        this.coffeeExtraPrice = coffeeExtraPrice;
-        this.companionExtraPrice = companionExtraPrice;
+        this.sodaQuantity = sodaQuantity;
+        this.waterQuantity = waterQuantity;
+        this.coffeeQuantity = coffeeQuantity;
         this.stay = stay;
     }
 
@@ -52,36 +48,28 @@ public class Extras {
         this.stay = stay;
     }
 
-    public BigDecimal getSodaExtraPrice() {
-        return sodaExtraPrice;
+    public Integer getSodaQuantity() {
+        return sodaQuantity;
     }
 
-    public void setSodaExtraPrice(BigDecimal sodaExtraPrice) {
-        this.sodaExtraPrice = sodaExtraPrice;
+    public void setSodaQuantity(Integer sodaQuantity) {
+        this.sodaQuantity = sodaQuantity;
     }
 
-    public BigDecimal getWaterExtraPrice() {
-        return waterExtraPrice;
+    public Integer getWaterQuantity() {
+        return waterQuantity;
     }
 
-    public void setWaterExtraPrice(BigDecimal waterExtraPrice) {
-        this.waterExtraPrice = waterExtraPrice;
+    public void setWaterQuantity(Integer waterQuantity) {
+        this.waterQuantity = waterQuantity;
     }
 
-    public BigDecimal getCoffeeExtraPrice() {
-        return coffeeExtraPrice;
+    public Integer getCoffeeQuantity() {
+        return coffeeQuantity;
     }
 
-    public void setCoffeeExtraPrice(BigDecimal coffeeExtraPrice) {
-        this.coffeeExtraPrice = coffeeExtraPrice;
-    }
-
-    public BigDecimal getCompanionExtraPrice() {
-        return companionExtraPrice;
-    }
-
-    public void setCompanionExtraPrice(BigDecimal companionExtraPrice) {
-        this.companionExtraPrice = companionExtraPrice;
+    public void setCoffeeQuantity(Integer coffeeQuantity) {
+        this.coffeeQuantity = coffeeQuantity;
     }
 
 }

@@ -25,7 +25,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomStatusEnum status;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
     private List<Stay> stays = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
