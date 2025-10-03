@@ -9,62 +9,70 @@
 <body class="bg-slate-50 min-h-screen flex items-center flex-col justify-center p-8">
 
 <div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-5xl">
+    <form th:action="@{stays/checkout/save/${stay.id}" th:object="${extras}" th:method="post" class="space-y-1">
 
-    <h1 class="text-3xl font-bold text-slate-800 mb-6 text-center">Página de checkout</h1>
+        <h1 class="text-3xl font-bold text-slate-800 mb-6 text-center">Página de checkout</h1>
 
-    <div class="mb-6" >
-        <p class="font-semibold text-xl">Nome do Hospede: <span th:text="${stay.client.firstName} + ' ' + ${stay.client.lastName}"></span></p>
-        <p class="font-semibold text-xl">Apartamento n°: <span th:text="${stay.room.number}"></span></p>
-        <p class="font-semibold text-xl">Total de diárias <span th:text="${stay.stayAmount}"></span></p>
-    </div>
-    <div class="mb-6">
-        <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Adicionar extras</h2>
-
-        <div class="flex flex-col gap-4">
-
-            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
-                <span class="font-semibold text-lg">Água <span class="text-sky-600">R$ 4,00</span></span>
-                <div class="flex items-center gap-2">
-                    <input type="number" min="0" value="0"
-                           class="w-16 border rounded-lg px-2 py-1 text-center"
-                           id="agua">
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
-                <span class="font-semibold text-lg">Refrigerante <span class="text-sky-600">R$ 5,00</span></span>
-                <div class="flex items-center gap-2">
-                    <input type="number" min="0" value="0"
-                           class="w-16 border rounded-lg px-2 py-1 text-center"
-                           id="refri">
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
-                <span class="font-semibold text-lg">Café extra <span class="text-sky-600">R$ 20,00</span></span>
-                <div class="flex items-center gap-2">
-                    <input type="number" min="0" value="0"
-                           class="w-16 border rounded-lg px-2 py-1 text-center"
-                           id="cafe">
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center bg-sky-100 p-4 rounded-xl shadow-md mt-4">
-                <span class="font-bold text-xl">Total:</span>
-                <span id="total" class="font-bold text-xl text-sky-700">R$ 0,00</span>
-            </div>
-
+        <div class="mb-6" >
+            <p class="font-semibold text-xl">Nome do Hospede: <span th:text="${stay.client.firstName} + ' ' + ${stay.client.lastName}"></span></p>
+            <p class="font-semibold text-xl">Apartamento n°: <span th:text="${stay.room.number}"></span></p>
+            <p class="font-semibold text-xl">Total de diárias <span th:text="${stay.stayAmount}"></span></p>
         </div>
-    </div>
+        <div class="mb-6">
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 text-center">Adicionar extras</h2>
+
+            <div class="flex flex-col gap-4">
+
+                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                    <span class="font-semibold text-lg">Água <span class="text-sky-600">R$ 4,00</span></span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" min="0" value="0"
+                               th:field="${extras.waterExtraPrice}"
+                               class="w-16 border font-semibold rounded-lg px-2 py-1 text-center"
+                               id="water">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                    <span class="font-semibold text-lg">Refrigerante <span class="text-sky-600">R$ 5,00</span></span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" min="0" value="0"
+                               th:field="${extras.sodaExtraPrice}"
+                               class="w-16 border font-semibold rounded-lg px-2 py-1 text-center"
+                               id="soda">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl shadow-sm">
+                    <span class="font-semibold text-lg">Café extra <span class="text-sky-600">R$ 20,00</span></span>
+                    <div class="flex items-center gap-2">
+                        <input type="number" min="0" value="0"
+                               th:field="${extras.coffeeExtraPrice}"
+                               class="w-16 font-semibold border rounded-lg px-2 py-1 text-center"
+                               id="coffee">
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center bg-sky-100 p-4 rounded-xl shadow-md mt-4">
+                    <span class="font-bold text-xl">Total:</span>
+                    <span id="total" class="font-bold text-xl text-sky-700">R$ 0,00</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center bg-green-500 py-4">
+            <button type="submit" > Check-out </button>
+        </div>
+
+    </form>
 </div>
 <script>
     const prices = {
-        agua: 4.00,
-        refri: 5.00,
-        cafe: 20.00
+        water: 4.00,
+        soda: 5.00,
+        coffee: 20.00
     };
 
-    const inputs = document.querySelectorAll("#agua, #refri, #cafe");
+    const inputs = document.querySelectorAll("#water, #soda, #coffee");
     const totalEl = document.getElementById("total");
 
     function updateTotal() {

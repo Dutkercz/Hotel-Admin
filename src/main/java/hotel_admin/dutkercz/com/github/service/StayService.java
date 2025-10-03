@@ -1,10 +1,7 @@
 package hotel_admin.dutkercz.com.github.service;
 
 import hotel_admin.dutkercz.com.github.exceptions.RoomConflictException;
-import hotel_admin.dutkercz.com.github.model.Client;
-import hotel_admin.dutkercz.com.github.model.Maintenance;
-import hotel_admin.dutkercz.com.github.model.Room;
-import hotel_admin.dutkercz.com.github.model.Stay;
+import hotel_admin.dutkercz.com.github.model.*;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.ClientRepository;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
@@ -150,5 +147,26 @@ public class StayService {
             statusMap.put(referenceDay.toString(), dayMap);
         }
         return statusMap;
+    }
+
+    @Transactional
+    public void saveCheckOut(Long stayId, Extras extras) {
+        Stay stay = stayRepository.findById(stayId)
+                .orElseThrow(() -> new EntityNotFoundException("Hospedagem não encontrada"));
+
+        BigDecimal total = stay.getStayPrice();
+        total = total.add(extras.getCoffeeExtraPrice())
+                .add(extras.getSodaExtraPrice())
+                .add(extras.getWaterExtraPrice());
+
+        stay.setStayPrice(total);
+
+        System.out.println(total);
+        System.out.println(extras.getCoffeeExtraPrice());
+        System.out.println(extras.getSodaExtraPrice());
+        System.out.println(extras.getWaterExtraPrice());
+
+
+        stayRepository.save(stay);
     }
 }

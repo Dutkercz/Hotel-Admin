@@ -23,6 +23,9 @@ public class Stay {
     @ManyToOne
     private Room room;
 
+    @OneToOne(mappedBy = "stay", cascade = CascadeType.ALL)
+    private Extras extras;
+
     @OneToMany(mappedBy = "stay", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<StayGuest> guests = new ArrayList<>();
 
@@ -37,10 +40,11 @@ public class Stay {
     public Stay() {
     }
 
-    public Stay(Long id, Client client, Room room, LocalDateTime checkIn, LocalDateTime checkOut, BigDecimal stayPrice, Integer stayAmount, StayStatusEnum status) {
+    public Stay(Long id, Client client, Room room, Extras extras, LocalDateTime checkIn, LocalDateTime checkOut, BigDecimal stayPrice, Integer stayAmount, StayStatusEnum status) {
         this.id = id;
         this.client = client;
         this.room = room;
+        this.extras = extras;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.stayPrice = stayPrice;
@@ -126,6 +130,14 @@ public class Stay {
         this.stayAmount = stayAmount;
     }
 
+    public Extras getExtras() {
+        return extras;
+    }
+
+    public void setExtras(Extras extras) {
+        this.extras = extras;
+    }
+
     public StayStatusEnum getStatus() {
         return status;
     }
@@ -163,4 +175,5 @@ public class Stay {
         result = 31 * result + Objects.hashCode(getStatus());
         return result;
     }
+
 }

@@ -11,6 +11,10 @@
 
 <div class="bg-white shadow-xl rounded-3xl p-12 w-full max-w-8xl mx-auto my-12">
 
+    <div th:if="${success}" class="bg-emerald-100 text-emerald-700 p-3 rounded-lg mb-4">
+        <p th:text="${success}"></p>
+    </div>
+
     <h1 class="text-slate-800 font-extrabold text-4xl sm:text-5xl text-center mb-10 drop-shadow-sm">
         Bem Vindo ao Sistema Hotel Itaipu
     </h1>

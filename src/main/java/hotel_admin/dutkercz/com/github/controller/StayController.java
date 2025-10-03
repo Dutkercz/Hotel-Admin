@@ -1,5 +1,6 @@
 package hotel_admin.dutkercz.com.github.controller;
 
+import hotel_admin.dutkercz.com.github.model.Extras;
 import hotel_admin.dutkercz.com.github.model.Stay;
 import hotel_admin.dutkercz.com.github.service.RoomService;
 import hotel_admin.dutkercz.com.github.service.StayService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -94,6 +96,15 @@ public class StayController {
     public String checkOut(@RequestParam Long roomId, Model model){
         Stay stay = stayService.findByRoomIdAndActive(roomId);
         model.addAttribute("stay", stay );
+        model.addAttribute("extras", new Extras());
         return "stay-checkout";
+    }
+
+    @PostMapping("/checkout/save/{stayId}")
+    public String checkOutSave(@PathVariable("stayId") Long stayId, @ModelAttribute("extras") Extras extras, RedirectAttributes redirectAttributes){
+        stayService.saveCheckOut(stayId, extras);
+
+        redirectAttributes.addFlashAttribute("success", "Checkout realizado com sucesso!!");
+        return "redirect:/";
     }
 }
