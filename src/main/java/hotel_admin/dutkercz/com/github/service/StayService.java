@@ -145,15 +145,11 @@ public class StayService {
         Stay stay = stayRepository.findById(stayId)
                 .orElseThrow(() -> new EntityNotFoundException("Hospedagem não encontrada"));
 
-
         extras.setStay(stay);
         extrasService.saveExtras(extras);
         roomService.checkOutRoom(stay.getRoom());
-
         BigDecimal total = CalculateStayExtras.calculateStayExtras(calculateStayPrice(stay), extras);
         stay.setStayPrice(total);
-
-
         stay.setCheckOut(LocalDateTime.now(), stay.getStayAmount());
         stay.setStatus(FINISHED);
 

@@ -7,9 +7,13 @@ import java.math.BigDecimal;
 public class CalculateStayExtras {
 
     public static BigDecimal calculateStayExtras(BigDecimal stayPrice, Extras extras) {
-        return stayPrice.add(BigDecimal.valueOf(extras.getWaterQuantity() * 4.00))
-                .add(BigDecimal.valueOf(extras.getSodaQuantity() * 5.00))
-                .add(BigDecimal.valueOf(extras.getCoffeeQuantity() * 20.00));
+       return
+        stayPrice.add(extras.getWaterQuantity() != null && extras.getWaterQuantity() > 0 ?
+                        BigDecimal.valueOf(extras.getWaterQuantity() * 4.00) : BigDecimal.ZERO)
+                .add(extras.getSodaQuantity() != null  && extras.getSodaQuantity() > 0?
+                        BigDecimal.valueOf(extras.getSodaQuantity() * 5.00) : BigDecimal.ZERO)
+                .add(extras.getCoffeeQuantity() != null && extras.getCoffeeQuantity() > 0 ?
+                        BigDecimal.valueOf(extras.getCoffeeQuantity() * 20.00) : BigDecimal.ZERO);
     }
 
 }
