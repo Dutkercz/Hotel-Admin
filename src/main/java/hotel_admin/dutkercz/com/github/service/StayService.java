@@ -150,7 +150,6 @@ public class StayService {
         roomService.checkOutRoom(stay.getRoom());
         BigDecimal total = CalculateStayExtras.calculateStayExtras(calculateStayPrice(stay), extras);
         stay.setStayPrice(total);
-        stay.setCheckOut(LocalDateTime.now(), stay.getStayAmount());
         stay.setStatus(FINISHED);
 
         stayRepository.save(stay);

@@ -41,8 +41,8 @@ public class ClientController {
     //salva a cliente preenchida no formulario
     @PostMapping("/save")
     public String saveClient(@ModelAttribute("client") Client client, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("success", "Cliente cadastrado com sucesso.");
         clientService.saveClient(client);
+        redirectAttributes.addFlashAttribute("success", "Cliente cadastrado com sucesso.");
         return "redirect:/";
     }
 
