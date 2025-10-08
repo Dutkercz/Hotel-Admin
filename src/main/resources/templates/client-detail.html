@@ -4,9 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Detalhes do Cliente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<title>Detalhes do Cliente</title>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-    <img th:src="@{/images/tiriricaaa.jpg}" alt="SOU EU SEU ABESTADO">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-8">
+<div class="bg-white shadow-lg rounded-3xl p-10 w-full max-w-3xl mx-auto my-12">
+    <!-- Título -->
+    <h1 class="text-slate-900 font-bold text-4xl text-center mb-8">
+        Detalhes do Cliente
+    </h1>
+
+    <div class="space-y-6">
+        <div class="flex justify-between items-center">
+            <p class="text-lg font-medium text-slate-700">Nome Completo:</p>
+            <span th:text="${client.firstName + ' ' + client.lastName}" class="text-lg text-slate-500"></span>
+        </div>
+        <div class="flex justify-between items-center">
+            <p class="text-lg font-medium text-slate-700">Telefone:</p>
+            <span th:text="${client.phone}" class="text-lg text-slate-500"></span>
+        </div>
+        <div class="flex justify-between items-center">
+            <p class="text-lg font-medium text-slate-700">Status:</p>
+            <span th:text="${client.status.name() == 'ACTIVE' ? 'ATIVO' : 'INATIVO'}" class="text-lg text-slate-500"></span>
+        </div>
+        <div>
+            <p class="text-lg font-medium text-slate-700"> Cidade</p>
+            <span th:text="${client.address.city}"></span>
+        </div>
+    </div>
+</div>
 </body>
 </html>
