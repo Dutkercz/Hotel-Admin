@@ -68,7 +68,7 @@ public class StayService {
     }
 
     public List<Stay> findAllByClient(String cpf) {
-        var formattedCpf = cpf.replaceAll("[,.-]", "");
+        String formattedCpf = cpf.replaceAll("[,.-]", "");
         return stayRepository.findAllByClientCpf(formattedCpf);
     }
 
@@ -111,7 +111,7 @@ public class StayService {
             LocalDateTime actualDayOfMonth = actualMonth.atDay(referenceDay).atTime(12, 1);
 
             for (Room r : rooms) {
-                var status = "AVAILABLE";
+                String status = "AVAILABLE";
 
                 for (Maintenance m : maintenances) {
                     if (m.getRoom().getId().equals(r.getId())

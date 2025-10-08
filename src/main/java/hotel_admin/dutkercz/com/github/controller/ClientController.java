@@ -101,4 +101,11 @@ public class ClientController {
         model.addAttribute("clientStays", clientService.findAllStaysByCpf(cpf));
         return "client-stay_history";
     }
+
+    @GetMapping("/detail")
+    public String clientDetail(@RequestParam("cpf") String cpf,Model model, RedirectAttributes redirectAttributes){
+        Client client = clientService.findByCpf(cpf);
+        model.addAttribute("client", client);
+        return "client-detail";
+    }
 }

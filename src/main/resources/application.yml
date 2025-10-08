@@ -4,4 +4,4 @@ spring:
   jpa:
     open-in-view: false
   profiles:
-    active: docker
+    active: dev
