@@ -19,11 +19,18 @@ public class DateUtils {
                 LocalDate.now();
     }
 
-    public static LocalDateTime defineLocalDateTime(LocalDateTime now){
+    public static LocalDateTime defineActualLocalDateTime(LocalDateTime now){
         return (now.toLocalTime().isBefore(LocalTime.NOON) ?
                         LocalDate.now().minusDays(1)
                         :
                         LocalDate.now()).atTime(12, 1);
+    }
+
+    public static LocalDateTime defineTodayDateToCheckOut(){
+        return (LocalDateTime.now().toLocalTime().isAfter(LocalTime.NOON) ?
+                        LocalDate.now().plusDays(1).atTime(8,0)
+                        :
+                        LocalDateTime.now());
     }
 
     public static List<Integer> getDaysOfMonth() {

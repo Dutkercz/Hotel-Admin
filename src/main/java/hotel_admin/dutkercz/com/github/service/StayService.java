@@ -49,9 +49,9 @@ public class StayService {
 
         room.setStatus(RoomStatusEnum.OCCUPIED);
         stay.setStatus(ACTIVE);
-        stay.setStayPrice(calculateStayPrice(stay));
         stay.setCheckIn(LocalDateTime.now());
         stay.setCheckOut(stay.getCheckIn(), stay.getStayAmount());
+        stay.setStayPrice(calculateStayPrice(stay));
         stay.setRoom(room);
         stay.setClient(client);
         stayRepository.save(stay);
@@ -76,10 +76,6 @@ public class StayService {
         return stayRepository.findAllByCheckInBetween(actualMonth.atDay(1).atStartOfDay(), actualMonth.atEndOfMonth().atTime(12, 0, 0));
     }
 
-    public Stay findByRoomIdAndActive(Long roomId) {
-        return stayRepository.findByRoomIdAndStatus(roomId, ACTIVE)
-                .orElseThrow(() -> new EntityNotFoundException("Diária não encontrada"));
-    }
 
     public Room newStaySetRoom(Long roomId) {
         Room room = roomService.findById(roomId);
@@ -141,6 +137,21 @@ public class StayService {
     }
 
     @Transactional
+    public Stay findByRoomIdAndActive(Long roomId) {
+        var stay =  stayRepository.findByRoomIdAndStatus(roomId, ACTIVE)
+                .orElseThrow(() -> new EntityNotFoundException("Diária não encontrada"));
+
+        LocalDateTime today = DateUtils.defineTodayDateToCheckOut();
+        System.out.println("Today do service: "+ today);
+        int stayAmount = today.getDayOfMonth() - stay.getCheckIn().getDayOfMonth();
+        System.out.println("Stay amount no service : " + stayAmount);
+        stay.setStayAmount(stayAmount);
+        stay.setCheckOut(stay.getCheckIn(), stayAmount);
+        stay.setStayPrice(CalculateStayPrice.calculateStayPrice(stay));
+        return stay;
+    }
+
+    @Transactional
     public void saveCheckOut(Long stayId, Extras extras) {
         Stay stay = stayRepository.findById(stayId)
                 .orElseThrow(() -> new EntityNotFoundException("Hospedagem não encontrada"));
@@ -148,7 +159,7 @@ public class StayService {
         extras.setStay(stay);
         extrasService.saveExtras(extras);
         roomService.checkOutRoom(stay.getRoom());
-        BigDecimal total = CalculateStayExtras.calculateStayExtras(calculateStayPrice(stay), extras);
+        BigDecimal total = CalculateStayExtras.calculateStayExtras(stay.getStayPrice(), extras);
         stay.setStayPrice(total);
         stay.setStatus(FINISHED);
 

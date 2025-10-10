@@ -3,7 +3,6 @@ package hotel_admin.dutkercz.com.github.service;
 import hotel_admin.dutkercz.com.github.model.Maintenance;
 import hotel_admin.dutkercz.com.github.model.Room;
 import hotel_admin.dutkercz.com.github.model.enums.RoomStatusEnum;
-import hotel_admin.dutkercz.com.github.model.enums.StayStatusEnum;
 import hotel_admin.dutkercz.com.github.repository.RoomRepository;
 import hotel_admin.dutkercz.com.github.service.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,13 +30,13 @@ public class RoomService {
         var room = roomRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Quarto não encontrado"));
         if (room.getStatus().equals(RoomStatusEnum.MAINTENANCE)){
-            room.getMaintenances().getLast().setEndMaintenance(DateUtils.defineLocalDateTime(LocalDateTime.now()));
+            room.getMaintenances().getLast().setEndMaintenance(DateUtils.defineActualLocalDateTime(LocalDateTime.now()));
             room.getMaintenances().getLast().setActive(false);
             room.setStatus(RoomStatusEnum.AVAILABLE);
         }else {
             room.setStatus(RoomStatusEnum.MAINTENANCE);
             Maintenance maintenance = new Maintenance();
-            maintenance.setStartMaintenance(DateUtils.defineLocalDateTime(LocalDateTime.now()));
+            maintenance.setStartMaintenance(DateUtils.defineActualLocalDateTime(LocalDateTime.now()));
             maintenance.setActive(true);
             room.addMaintenance(maintenance);
         }
